@@ -1,0 +1,55 @@
+# restflow
+
+API testing flows created with Restflow.
+
+## Getting Started
+
+1. **Configure environment variables**:
+   ```bash
+   cp .env.example .env
+   # Edit .env with your API settings
+   ```
+
+2. **Run flows**:
+   ```bash
+   # Run all flows
+   npm test
+
+   # Run with environment
+   npm run test:env
+
+   # Verbose output
+   npm run test:verbose
+
+   # JSON output
+   npm run test:json
+   ```
+
+## Template: Basic
+
+Simple API testing setup with health checks and basic CRUD operations.
+
+## Flow Structure
+
+```
+flows/
+├── 01-health.flow
+└── 02-users.flow
+```
+
+## Environment Variables
+
+See `.env.example` for required variables.
+
+## Documentation
+
+- [Restflow Documentation](https://github.com/mxvsh/restflow)
+- [Flow Syntax Guide](https://github.com/mxvsh/restflow#flow-syntax)
+
+## Commands
+
+- `restflow run flows/` - Run all flows
+- `restflow run flows/specific.flow` - Run specific flow
+- `restflow run flows/ --env .env.staging` - Use specific environment
+- `restflow run flows/ --format json` - JSON output
+- `restflow run flows/ --verbose` - Detailed output
