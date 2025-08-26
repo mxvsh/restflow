@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { DefaultEnvMerger, mergeEnvironments } from "../mergers/env-merger";
+import { DefaultEnvMerger, mergeEnvironments } from "../mergers/env-merger.js";
 
 describe("DefaultEnvMerger", () => {
 	let merger: DefaultEnvMerger;

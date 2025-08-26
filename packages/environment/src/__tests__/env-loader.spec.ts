@@ -1,7 +1,7 @@
-import { mkdirSync, rmSync, unlinkSync, writeFileSync } from "fs";
-import { join } from "path";
+import { mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { DotenvLoader, EnvLoadError } from "../loaders/env-loader";
+import { DotenvLoader, EnvLoadError } from "../loaders/env-loader.js";
 
 describe("DotenvLoader", () => {
 	let loader: DotenvLoader;

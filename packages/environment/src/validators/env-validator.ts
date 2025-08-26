@@ -91,7 +91,7 @@ export class EnvValidator {
 			case "string":
 				return true; // All env vars are strings
 			case "number":
-				return !isNaN(Number(value));
+				return !Number.isNaN(Number(value));
 			case "boolean":
 				return ["true", "false", "1", "0", "yes", "no"].includes(
 					value.toLowerCase(),

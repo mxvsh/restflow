@@ -13,7 +13,7 @@ describe("environment package", () => {
 			EnvironmentManager,
 			EnvValidator,
 			loadEnvironmentFile,
-		} = await import("../index");
+		} = await import("../index.js");
 
 		expect(DotenvLoader).toBeDefined();
 		expect(DefaultEnvMerger).toBeDefined();
