@@ -1,109 +1,291 @@
 # Restflow
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+A powerful CLI tool for API testing and workflow automation using a simple, human-readable DSL.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+## Features
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/js?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+- **Simple DSL**: Write API tests in plain text with `.flow` files
+- **Variable Substitution**: Use `{{variable}}` syntax for dynamic values
+- **Environment Support**: Load variables from `.env` files
+- **Assertions**: JSONPath and regex-based response validation
+- **Multiple Output Formats**: Console (colored), JSON, and summary reports
+- **Step Dependencies**: Capture values from responses and use in subsequent steps
+- **Fast Execution**: Concurrent request processing with timeout support
 
-## Generate a library
+## Quick Start
 
-```sh
-npx nx g @nx/js:lib packages/pkg1 --publishable --importPath=@my-org/pkg1
+### Installation
+
+```bash
+npm install -g @restflow/cli
+# or
+pnpm add @restflow/cli
 ```
 
-## Run tasks
+### Basic Usage
 
-To build the library use:
+1. **Create a flow file** (`api-test.flow`):
 
-```sh
-npx nx build pkg1
+```flow
+### Health Check
+GET https://api.example.com/health
+
+> assert status == 200
+> assert body.status == "ok"
+
+### Create User
+POST https://api.example.com/users
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john@example.com"
+}
+
+> assert status == 201
+> assert body.email == "john@example.com"
+> capture userId = body.id
+
+### Get User
+GET https://api.example.com/users/{{userId}}
+
+> assert status == 200
+> assert body.name == "John Doe"
 ```
 
-To run any task with Nx use:
+2. **Run the flow**:
 
-```sh
-npx nx <target> <project-name>
+```bash
+restflow run api-test.flow
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
-
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Versioning and releasing
-
-To version and release the library use
+3. **See results**:
 
 ```
-npx nx release
+Found 1 flow file(s) to execute
+[1/3] Step: Health Check
+  ✅ GET https://api.example.com/health - 200 (120ms)
+    ✓ assert: status == 200
+    ✓ assert: body.status == "ok"
+
+[2/3] Step: Create User
+  ✅ POST https://api.example.com/users - 201 (340ms)
+    ✓ assert: status == 201
+    ✓ assert: body.email == "john@example.com"
+    ✓ capture: userId → body.id
+
+[3/3] Step: Get User
+  ✅ GET https://api.example.com/users/123 - 200 (89ms)
+    ✓ assert: status == 200
+    ✓ assert: body.name == "John Doe"
+
+Summary: ✅ PASSED
+Steps: 3/3 passed
+Directives: 7/7 passed
+Duration: 549ms
 ```
 
-Pass `--dry-run` to see what would happen without actually releasing the library.
+## Flow Syntax
 
-[Learn more about Nx release &raquo;](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### Basic Structure
 
-## Keep TypeScript project references up to date
+```flow
+### Step Name
+HTTP_METHOD url
+Header-Name: header-value
 
-Nx automatically updates TypeScript [project references](https://www.typescriptlang.org/docs/handbook/project-references.html) in `tsconfig.json` files to ensure they remain accurate based on your project dependencies (`import` or `require` statements). This sync is automatically done when running tasks such as `build` or `typecheck`, which require updated references to function correctly.
+request-body
 
-To manually trigger the process to sync the project graph dependencies information to the TypeScript project references, run the following command:
-
-```sh
-npx nx sync
+> directive
+> another-directive
 ```
 
-You can enforce that the TypeScript project references are always in the correct state when running in CI by adding a step to your CI job configuration that runs the following command:
+### HTTP Methods
 
-```sh
-npx nx sync:check
+```flow
+### GET Request
+GET https://api.example.com/users
+
+### POST with JSON
+POST https://api.example.com/users
+Content-Type: application/json
+
+{
+  "name": "John",
+  "email": "john@example.com"
+}
+
+### PUT with headers
+PUT https://api.example.com/users/123
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "John Updated"
+}
 ```
 
-[Learn more about nx sync](https://nx.dev/reference/nx-commands#sync)
+### Directives
 
-## Set up CI!
-
-### Step 1
-
-To connect to Nx Cloud, run the following command:
-
-```sh
-npx nx connect
+#### Assertions
+```flow
+> assert status == 200
+> assert status != 404
+> assert body.name == "John"
+> assert body.users.length > 0
+> assert headers["content-type"] contains "application/json"
 ```
 
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
-
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-### Step 2
-
-Use the following command to configure a CI workflow for your workspace:
-
-```sh
-npx nx g ci-workflow
+#### Variable Capture
+```flow
+> capture token = body.access_token
+> capture userId = body.user.id
+> capture firstUser = body.users[0].name
 ```
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### Variable Substitution
 
-## Install Nx Console
+Use captured variables or environment variables:
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+```flow
+### Login
+POST https://api.example.com/auth/login
+Content-Type: application/json
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
 
-## Useful links
+> capture token = body.token
 
-Learn more:
+### Protected Request
+GET https://api.example.com/profile
+Authorization: Bearer {{token}}
+```
 
-- [Learn more about this workspace setup](https://nx.dev/nx-api/js?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## Environment Variables
 
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Create a `.env` file:
+
+```env
+BASE_URL=https://api.staging.example.com
+API_KEY=your-secret-key
+EMAIL=test@example.com
+PASSWORD=test123
+```
+
+Use in flows:
+
+```flow
+### API Call
+GET {{BASE_URL}}/data
+X-API-Key: {{API_KEY}}
+```
+
+Run with environment:
+
+```bash
+restflow run flows/ --env .env.staging
+```
+
+## CLI Options
+
+```bash
+# Basic usage
+restflow run flow.flow
+
+# Multiple flows
+restflow run flows/
+
+# With environment
+restflow run flows/ --env .env.staging
+
+# Different output formats
+restflow run flows/ --format json
+restflow run flows/ --format summary
+
+# Verbose output
+restflow run flows/ --verbose
+
+# Show request/response details
+restflow run flows/ --show-body --show-headers
+
+# Custom timeout
+restflow run flows/ --timeout 10000
+```
+
+## Output Formats
+
+### Console (Default)
+Colored, human-readable output with progress indicators.
+
+### JSON
+Machine-readable output for CI/CD integration:
+
+```bash
+restflow run flows/ --format json > results.json
+```
+
+### Summary
+Concise tabular output:
+
+```bash
+restflow run flows/ --format summary
+```
+
+## Development
+
+This project uses Nx monorepo architecture:
+
+```bash
+# Install dependencies
+pnpm install
+
+# Build all packages
+pnpm nx run-many -t build --all
+
+# Run tests
+pnpm nx run-many -t test --all
+
+# Build CLI
+pnpm nx build cli
+```
+
+### Package Structure
+
+- `@restflow/cli` - Command line interface
+- `@restflow/parser` - Flow file parser
+- `@restflow/engine` - Flow execution engine
+- `@restflow/http` - HTTP client
+- `@restflow/variables` - Variable resolution
+- `@restflow/environment` - Environment loading
+- `@restflow/assertions` - Response validation
+- `@restflow/reporter` - Output formatting
+- `@restflow/types` - TypeScript definitions
+- `@restflow/utils` - Shared utilities
+
+## Examples
+
+Check out the [examples/basic](./examples/basic) directory for a complete working example with:
+
+- Express.js server with authentication
+- Health check flows
+- User registration and login flows
+- JWT token handling
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests
+5. Submit a pull request
+
+## License
+
+MIT License - see LICENSE file for details.
+
+---
+
+**Built for API testing and automation**
