@@ -5,7 +5,7 @@
 		"serve": "tsx watch src/index.ts",
 		"build": "tsc",
 		"start": "node dist/index.js",
-		"test": "restflow run flows --env .env"
+		"test:flow": "restflow run flows --env .env"
 	},
 	"dependencies": {
 		"@hono/node-server": "^1.19.0",
