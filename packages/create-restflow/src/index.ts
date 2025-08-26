@@ -1,1 +1,1 @@
-export * from './lib/create-restflow.js';
+export * from "./generators/create-restflow.js";

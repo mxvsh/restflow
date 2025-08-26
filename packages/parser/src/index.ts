@@ -1,1 +1,1 @@
-export * from './lib/parser.js';
+export * from "./parsers/parser.js";

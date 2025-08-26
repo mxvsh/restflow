@@ -1,1 +1,1 @@
-export * from './lib/http.js';
+export * from "./clients/http.js";

@@ -1,1 +1,1 @@
-export * from './lib/variables.js';
+export * from "./resolvers/variables.js";
