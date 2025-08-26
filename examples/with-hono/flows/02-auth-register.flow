@@ -1,0 +1,36 @@
+### Register New User
+POST {{BASE_URL}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "regtest_user_unique_789",
+  "password": "password123"
+}
+
+> assert status >= 200
+> assert status < 500
+
+### Register Another User to Test Duplication
+POST {{BASE_URL}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "duplicate_test_user_456",
+  "password": "password123"
+}
+
+> assert status == 200
+> assert body.message == "User registered successfully"
+> assert body.userId != null
+
+### Try to Register Same User Again
+POST {{BASE_URL}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "duplicate_test_user_456",
+  "password": "different123"
+}
+
+> assert status == 400
+> assert body.error == "User already exists"

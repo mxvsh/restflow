@@ -133,6 +133,9 @@ importers:
         specifier: ^4.9.4
         version: 4.9.4
     devDependencies:
+      '@restflow/cli':
+        specifier: workspace:*
+        version: link:../../packages/cli
       '@types/node':
         specifier: ^20.11.17
         version: 20.19.9
@@ -148,6 +151,9 @@ importers:
       '@restflow/types':
         specifier: workspace:*
         version: link:../types
+      '@restflow/variables':
+        specifier: workspace:*
+        version: link:../variables
       jsonpath:
         specifier: ^1.1.1
         version: 1.1.1

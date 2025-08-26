@@ -1,0 +1,65 @@
+### Register and Login User
+POST {{BASE_URL}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "profileuser2025",
+  "password": "profilepass"
+}
+
+> assert status == 200
+
+### Login to Get Token
+POST {{BASE_URL}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "profileuser2025",
+  "password": "profilepass"
+}
+
+> assert status == 200
+> assert body.token != null
+> capture token = body.token
+
+### Get Profile with Valid Token
+GET {{BASE_URL}}/auth/profile
+Authorization: Bearer {{token}}
+
+> assert status == 200
+> assert body.username == "profileuser2025"
+> assert body.id != null
+> capture userId = body.id
+
+### Get Profile without Token
+GET {{BASE_URL}}/auth/profile
+
+> assert status == 401
+
+### Get Profile with Invalid Token
+GET {{BASE_URL}}/auth/profile
+Authorization: Bearer invalid-token
+
+> assert status == 401
+
+### Update Profile with Valid Token
+PUT {{BASE_URL}}/auth/profile
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "username": "updateduser2025"
+}
+
+> assert status == 200
+> assert body.message == "Profile updated successfully"
+> assert body.user.username == "updateduser2025"
+> assert body.user.id == {{userId}}
+
+### Verify Profile Update
+GET {{BASE_URL}}/auth/profile
+Authorization: Bearer {{token}}
+
+> assert status == 200
+> assert body.username == "updateduser2025"
+> assert body.id == {{userId}}

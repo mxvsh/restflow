@@ -177,6 +177,7 @@ export class FlowExecutor {
 			const directiveResults = this.evaluateDirectives(
 				step.directives,
 				response,
+				context,
 			);
 
 			const duration = Date.now() - startTime;
@@ -240,13 +241,14 @@ export class FlowExecutor {
 	private evaluateDirectives(
 		directives: Array<CaptureDirective | AssertDirective>,
 		response: HttpResponse,
+		context: ExecutionContext,
 	): DirectiveResult[] {
 		return directives.map((directive) => {
 			try {
 				if (directive.type === "capture") {
 					return this.evaluateCaptureDirective(directive, response);
 				} else if (directive.type === "assert") {
-					return this.evaluateAssertDirective(directive, response);
+					return this.evaluateAssertDirective(directive, response, context);
 				} else {
 					return {
 						directive,
@@ -300,11 +302,13 @@ export class FlowExecutor {
 	private evaluateAssertDirective(
 		directive: AssertDirective,
 		response: HttpResponse,
+		context: ExecutionContext,
 	): DirectiveResult {
 		try {
 			const result = this.assertionEvaluator.evaluate(
 				directive.expression,
 				response,
+				context,
 			);
 
 			return {

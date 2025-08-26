@@ -1,0 +1,47 @@
+### Register User for Login Test
+POST {{BASE_URL}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "loginuser",
+  "password": "mypassword"
+}
+
+> assert status == 200
+
+### Login with Valid Credentials
+POST {{BASE_URL}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "loginuser",
+  "password": "mypassword"
+}
+
+> assert status == 200
+> assert body.token != null
+> capture token = body.token
+
+### Login with Invalid Username
+POST {{BASE_URL}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "nonexistent",
+  "password": "mypassword"
+}
+
+> assert status == 401
+> assert body.error == "Invalid credentials"
+
+### Login with Invalid Password
+POST {{BASE_URL}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "loginuser",
+  "password": "wrongpassword"
+}
+
+> assert status == 401
+> assert body.error == "Invalid credentials"

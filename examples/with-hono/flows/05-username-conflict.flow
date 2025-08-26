@@ -1,0 +1,71 @@
+### Register First User
+POST {{BASE_URL}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "user1",
+  "password": "password1"
+}
+
+> assert status == 200
+> capture user1Id = body.userId
+
+### Register Second User
+POST {{BASE_URL}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "user2",
+  "password": "password2"
+}
+
+> assert status == 200
+> capture user2Id = body.userId
+
+### Login as First User
+POST {{BASE_URL}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "user1",
+  "password": "password1"
+}
+
+> assert status == 200
+> capture user1Token = body.token
+
+### Try to Update Profile to Existing Username
+PUT {{BASE_URL}}/auth/profile
+Authorization: Bearer {{user1Token}}
+Content-Type: application/json
+
+{
+  "username": "user2"
+}
+
+> assert status == 400
+> assert body.error == "Username already taken"
+
+### Update Profile to New Username (Should Work)
+PUT {{BASE_URL}}/auth/profile
+Authorization: Bearer {{user1Token}}
+Content-Type: application/json
+
+{
+  "username": "user1updated"
+}
+
+> assert status == 200
+> assert body.message == "Profile updated successfully"
+> assert body.user.username == "user1updated"
+
+### Verify Original User2 Still Exists
+POST {{BASE_URL}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "user2",
+  "password": "password2"
+}
+
+> assert status == 200
