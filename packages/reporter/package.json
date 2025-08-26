@@ -19,6 +19,7 @@
 		"!**/*.tsbuildinfo"
 	],
 	"dependencies": {
+		"@restflow/types": "workspace:*",
 		"picocolors": "^1.1.1",
 		"strip-ansi": "^7.1.0",
 		"tslib": "^2.3.0"
