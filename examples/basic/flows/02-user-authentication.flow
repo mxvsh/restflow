@@ -1,0 +1,43 @@
+# User Authentication Flow
+# Demonstrates login flow, token capture, and authenticated requests
+
+@name "User Authentication"
+
+## User Login
+POST {{BASE_URL}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "{{TEST_USERNAME}}",
+  "password": "{{TEST_PASSWORD}}"
+}
+
+@assert status == 200
+@assert body.success == true
+@assert body.token exists
+@assert body.user exists
+@capture token body.token
+@capture userId body.user.id
+
+## Get User Profile (with captured token)
+GET {{BASE_URL}}/user/profile
+Authorization: Bearer {{token}}
+
+@assert status == 200
+@assert body.id == {{userId}}
+@assert body.username == "{{TEST_USERNAME}}"
+@assert body.email exists
+
+## Update User Profile
+PUT {{BASE_URL}}/user/profile
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "displayName": "Updated Test User",
+  "bio": "This is a test profile updated via Restflow"
+}
+
+@assert status == 200
+@assert body.displayName == "Updated Test User"
+@assert body.updatedAt exists

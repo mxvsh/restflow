@@ -1,0 +1,17 @@
+# Health Check Flow
+# Simple health check to verify API is running
+
+@name "API Health Check"
+
+## Check server health
+GET {{BASE_URL}}/health
+@assert status == 200
+@assert body.status == "healthy"
+@assert headers.content-type contains "application/json"
+
+## Check server info
+GET {{BASE_URL}}/info
+@assert status == 200
+@assert body.version exists
+@assert body.environment exists
+@capture version body.version

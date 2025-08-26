@@ -1,0 +1,50 @@
+# Error Handling Flow
+# Demonstrates various error scenarios and validations
+
+@name "Error Handling & Validation"
+
+## Test 404 Not Found
+GET {{BASE_URL}}/nonexistent-endpoint
+
+@assert status == 404
+@assert body.error exists
+@assert body.message contains "not found"
+
+## Test 400 Bad Request with invalid JSON
+POST {{BASE_URL}}/products
+Content-Type: application/json
+
+{
+  "invalid": "data",
+  "missing": "required fields"
+}
+
+@assert status >= 400
+@assert status < 500
+@assert body.error exists
+
+## Test authentication failure
+GET {{BASE_URL}}/user/profile
+Authorization: Bearer invalid-token
+
+@assert status == 401
+@assert body.error exists
+
+## Test rate limiting (if implemented)
+GET {{BASE_URL}}/health
+X-Test-Header: rate-limit-test
+
+@assert status < 500
+# Rate limiting might return 429 or work normally
+
+## Test large payload handling
+POST {{BASE_URL}}/test/large-payload
+Content-Type: application/json
+
+{
+  "data": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  "items": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+}
+
+@assert status < 500
+@assert responseTime < {{TIMEOUT}}

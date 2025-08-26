@@ -1,0 +1,90 @@
+# Product Management Flow
+# Demonstrates CRUD operations with products
+
+@name "Product Management"
+
+## Login first to get authentication token
+POST {{BASE_URL}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "{{TEST_USERNAME}}",
+  "password": "{{TEST_PASSWORD}}"
+}
+
+@assert status == 200
+@capture token body.token
+
+## Get all products
+GET {{BASE_URL}}/products
+Authorization: Bearer {{token}}
+
+@assert status == 200
+@assert body.data exists
+@assert body.total >= 0
+@capture totalProducts body.total
+
+## Create a new product
+POST {{BASE_URL}}/products
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Test Product",
+  "description": "A product created by Restflow test",
+  "price": 29.99,
+  "category": "test",
+  "tags": ["restflow", "testing", "api"]
+}
+
+@assert status == 201
+@assert body.id exists
+@assert body.name == "Test Product"
+@assert body.price == 29.99
+@capture productId body.id
+
+## Get the created product
+GET {{BASE_URL}}/products/{{productId}}
+Authorization: Bearer {{token}}
+
+@assert status == 200
+@assert body.id == {{productId}}
+@assert body.name == "Test Product"
+@assert body.tags contains "restflow"
+
+## Update the product
+PUT {{BASE_URL}}/products/{{productId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Updated Test Product",
+  "description": "Updated description via Restflow",
+  "price": 39.99,
+  "featured": true
+}
+
+@assert status == 200
+@assert body.name == "Updated Test Product"
+@assert body.price == 39.99
+@assert body.featured == true
+
+## Search products
+GET {{BASE_URL}}/products/search?q=Updated&category=test
+Authorization: Bearer {{token}}
+
+@assert status == 200
+@assert body.results exists
+@assert body.results[0].name contains "Updated"
+
+## Delete the test product
+DELETE {{BASE_URL}}/products/{{productId}}
+Authorization: Bearer {{token}}
+
+@assert status == 204
+
+## Verify product is deleted
+GET {{BASE_URL}}/products/{{productId}}
+Authorization: Bearer {{token}}
+
+@assert status == 404

@@ -1,0 +1,15 @@
+{
+	"name": "restflow-basic-example",
+	"version": "1.0.0",
+	"description": "Basic Restflow example project with sample .flow files",
+	"private": true,
+	"scripts": {
+		"start": "restflow run flows/",
+		"dev": "restflow run flows/ --env environments/.env.dev",
+		"test": "restflow run flows/ --env environments/.env.test",
+		"prod": "restflow run flows/ --env environments/.env.prod"
+	},
+	"devDependencies": {
+		"@restflow/cli": "workspace:*"
+	}
+}
