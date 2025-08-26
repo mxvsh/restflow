@@ -27,8 +27,13 @@
 		"ora": "^8.2.0",
 		"picocolors": "^1.1.1",
 		"tslib": "^2.3.0",
+		"glob": "^10.3.10",
 		"@restflow/types": "workspace:*",
 		"@restflow/parser": "workspace:*",
-		"@restflow/http": "workspace:*"
+		"@restflow/http": "workspace:*",
+		"@restflow/engine": "workspace:*",
+		"@restflow/reporter": "workspace:*",
+		"@restflow/environment": "workspace:*",
+		"@restflow/utils": "workspace:*"
 	}
 }
