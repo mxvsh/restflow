@@ -23,17 +23,18 @@
 	},
 	"dependencies": {
 		"@clack/prompts": "^0.11.0",
-		"commander": "^14.0.0",
-		"ora": "^8.2.0",
-		"picocolors": "^1.1.1",
-		"tslib": "^2.3.0",
-		"glob": "^10.3.10",
-		"@restflow/types": "workspace:*",
-		"@restflow/parser": "workspace:*",
-		"@restflow/http": "workspace:*",
 		"@restflow/engine": "workspace:*",
-		"@restflow/reporter": "workspace:*",
 		"@restflow/environment": "workspace:*",
-		"@restflow/utils": "workspace:*"
+		"@restflow/http": "workspace:*",
+		"@restflow/parser": "workspace:*",
+		"@restflow/reporter": "workspace:*",
+		"@restflow/types": "workspace:*",
+		"@restflow/utils": "workspace:*",
+		"commander": "^14.0.0",
+		"figures": "^6.1.0",
+		"glob": "^10.3.10",
+		"picocolors": "^1.1.1",
+		"strip-ansi": "^7.1.0",
+		"tslib": "^2.3.0"
 	}
 }

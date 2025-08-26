@@ -35,9 +35,6 @@
     },
     {
       "path": "./packages/create-restflow"
-    },
-    {
-      "path": "./examples/basic"
     }
   ]
 }

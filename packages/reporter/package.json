@@ -20,8 +20,8 @@
 	],
 	"dependencies": {
 		"@restflow/types": "workspace:*",
+		"figures": "^6.1.0",
 		"picocolors": "^1.1.1",
-		"strip-ansi": "^7.1.0",
 		"tslib": "^2.3.0"
 	}
 }

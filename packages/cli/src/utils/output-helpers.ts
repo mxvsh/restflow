@@ -1,10 +1,11 @@
+import figureSet from "figures";
 import pc from "picocolors";
 
 /**
  * Format success message
  */
 export function formatSuccess(message: string): string {
-	return pc.green(`✅ ${message}`);
+	return pc.green(`${figureSet.tick} ${message}`);
 }
 
 /**
@@ -43,19 +44,22 @@ export function formatExecutionSummary(
 	passedSteps: number,
 	totalDirectives: number,
 	passedDirectives: number,
-	duration: number
+	duration: number,
 ): string {
-	const stepSummary = passedSteps === totalSteps 
-		? pc.green(`${passedSteps}/${totalSteps} steps passed`)
-		: pc.red(`${passedSteps}/${totalSteps} steps passed`);
-	
-	const directiveSummary = passedDirectives === totalDirectives
-		? pc.green(`${passedDirectives}/${totalDirectives} directives passed`)
-		: pc.red(`${passedDirectives}/${totalDirectives} directives passed`);
+	const stepSummary =
+		passedSteps === totalSteps
+			? pc.green(`${passedSteps}/${totalSteps} steps passed`)
+			: pc.red(`${passedSteps}/${totalSteps} steps passed`);
 
-	const durationFormatted = duration > 1000 
-		? pc.yellow(`${(duration / 1000).toFixed(2)}s`)
-		: pc.gray(`${duration}ms`);
+	const directiveSummary =
+		passedDirectives === totalDirectives
+			? pc.green(`${passedDirectives}/${totalDirectives} directives passed`)
+			: pc.red(`${passedDirectives}/${totalDirectives} directives passed`);
+
+	const durationFormatted =
+		duration > 1000
+			? pc.yellow(`${(duration / 1000).toFixed(2)}s`)
+			: pc.gray(`${duration}ms`);
 
 	return `${stepSummary}, ${directiveSummary} in ${durationFormatted}`;
 }

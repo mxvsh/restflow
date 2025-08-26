@@ -16,7 +16,7 @@ export class DotenvLoader implements EnvLoader {
 		}
 
 		try {
-			const result = config({ path: resolvedPath });
+			const result = config({ path: resolvedPath, debug: false, quiet: true });
 
 			if (result.error) {
 				throw new EnvLoadError(
