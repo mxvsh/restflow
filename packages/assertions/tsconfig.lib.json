@@ -11,10 +11,13 @@
 	},
 	"include": ["src/**/*.ts"],
 	"references": [
-		{
-			"path": "../types/tsconfig.lib.json"
-		}
-	],
+    {
+      "path": "../variables/tsconfig.lib.json"
+    },
+    {
+      "path": "../types/tsconfig.lib.json"
+    }
+  ],
 	"exclude": [
 		"vite.config.ts",
 		"vite.config.mts",

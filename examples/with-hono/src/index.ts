@@ -53,10 +53,10 @@ app.post("/auth/login", async (c) => {
 	}
 
 	const token = await sign(
-		{ 
-			id: user.id, 
-			username: user.username, 
-			exp: Math.floor(Date.now() / 1000) + 60 * 60 // 1 hour
+		{
+			id: user.id,
+			username: user.username,
+			exp: Math.floor(Date.now() / 1000) + 60 * 60, // 1 hour
 		},
 		JWT_SECRET,
 	);
@@ -67,7 +67,7 @@ const jwtMiddleware = jwt({ secret: JWT_SECRET });
 
 app.get("/auth/profile", jwtMiddleware, async (c) => {
 	const payload = c.get("jwtPayload");
-	console.log("JWT Payload:", payload);
+
 	if (!payload) {
 		return c.json({ error: "Invalid token" }, 401);
 	}
@@ -84,7 +84,7 @@ app.get("/auth/profile", jwtMiddleware, async (c) => {
 
 app.put("/auth/profile", jwtMiddleware, async (c) => {
 	const payload = c.get("jwtPayload");
-	console.log("JWT Payload:", payload);
+
 	if (!payload) {
 		return c.json({ error: "Invalid token" }, 401);
 	}
