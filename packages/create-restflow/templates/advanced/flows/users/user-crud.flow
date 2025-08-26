@@ -1,0 +1,40 @@
+### List Users
+GET {{BASE_URL}}/users
+Authorization: Bearer {{API_TOKEN}}
+
+> assert status == 200
+> assert body.users != null
+> capture totalUsers = body.pagination.total
+
+### Create User
+POST {{BASE_URL}}/users
+Authorization: Bearer {{API_TOKEN}}
+Content-Type: application/json
+
+{
+  "name": "{{USER_NAME}}",
+  "email": "{{USER_EMAIL}}",
+  "role": "user"
+}
+
+> assert status == 201
+> assert body.user.role == "user"
+> capture userId = body.user.id
+
+### Update User
+PUT {{BASE_URL}}/users/{{userId}}
+Authorization: Bearer {{API_TOKEN}}
+Content-Type: application/json
+
+{
+  "name": "Updated Name"
+}
+
+> assert status == 200
+> assert body.user.name == "Updated Name"
+
+### Delete User
+DELETE {{BASE_URL}}/users/{{userId}}
+Authorization: Bearer {{API_TOKEN}}
+
+> assert status == 204

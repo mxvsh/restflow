@@ -1,0 +1,14 @@
+{
+  "name": "<%= name %>",
+  "version": "1.0.0",
+  "description": "API testing flows with authentication - created with Restflow",
+  "scripts": {
+    "test": "restflow run flows/",
+    "test:env": "restflow run flows/ --env .env",
+    "test:verbose": "restflow run flows/ --verbose",
+    "test:json": "restflow run flows/ --format json"
+  },
+  "devDependencies": {
+    "@restflow/cli": "^0.0.1"
+  }
+}

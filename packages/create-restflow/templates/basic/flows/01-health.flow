@@ -1,0 +1,5 @@
+### Health Check
+GET {{BASE_URL}}/health
+
+> assert status == 200
+> assert body.status == "ok"

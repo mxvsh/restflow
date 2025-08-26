@@ -1,0 +1,21 @@
+### Admin Login
+POST {{BASE_URL}}/auth/admin/login
+Content-Type: application/json
+
+{
+  "username": "{{ADMIN_USERNAME}}",
+  "password": "{{ADMIN_PASSWORD}}"
+}
+
+> assert status == 200
+> assert body.token != null
+> assert body.user.role == "admin"
+> capture adminToken = body.token
+
+### Get System Stats
+GET {{BASE_URL}}/admin/stats
+Authorization: Bearer {{adminToken}}
+
+> assert status == 200
+> assert body.stats != null
+> assert body.stats.users >= 0

@@ -1,0 +1,19 @@
+### Login
+POST {{BASE_URL}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{USER_EMAIL}}",
+  "password": "{{USER_PASSWORD}}"
+}
+
+> assert status == 200
+> assert body.token != null
+> capture authToken = body.token
+
+### Get Profile
+GET {{BASE_URL}}/auth/profile
+Authorization: Bearer {{authToken}}
+
+> assert status == 200
+> assert body.user.email == "{{USER_EMAIL}}"

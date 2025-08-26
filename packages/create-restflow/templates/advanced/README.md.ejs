@@ -1,0 +1,71 @@
+# <%= name %>
+
+API testing flows created with Restflow.
+
+## Getting Started
+
+1. **Configure environment variables**:
+   ```bash
+   cp .env.example .env
+   # Edit .env with your API settings
+   ```
+
+2. **Run flows**:
+   ```bash
+   # Run all flows
+   npm test
+
+   # Run specific environment
+   npm run test:staging
+   npm run test:prod
+
+   # Run specific flow groups
+   npm run test:health
+   npm run test:users
+   npm run test:admin
+
+   # Verbose output
+   npm run test:verbose
+
+   # JSON output
+   npm run test:json
+   ```
+
+## Template: Advanced
+
+Complex multi-environment setup with organized flow structure and admin operations.
+
+## Flow Structure
+
+```
+flows/
+├── health/
+│   └── health-checks.flow
+├── users/
+│   └── user-crud.flow
+└── admin/
+    └── admin-operations.flow
+```
+
+## Environment Variables
+
+See `.env.example` for required variables. Create separate files for different environments:
+
+- `.env` - Development environment
+- `.env.staging` - Staging environment  
+- `.env.production` - Production environment
+
+## Documentation
+
+- [Restflow Documentation](https://github.com/mxvsh/restflow)
+- [Flow Syntax Guide](https://github.com/mxvsh/restflow#flow-syntax)
+
+## Commands
+
+- `restflow run flows/` - Run all flows
+- `restflow run flows/health/` - Run health checks only
+- `restflow run flows/users/` - Run user tests only
+- `restflow run flows/admin/` - Run admin tests only
+- `restflow run flows/ --env .env.staging` - Use staging environment
+- `restflow run flows/ --format json` - JSON output
+- `restflow run flows/ --verbose` - Detailed output

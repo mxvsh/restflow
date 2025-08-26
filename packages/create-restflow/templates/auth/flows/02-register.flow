@@ -1,0 +1,12 @@
+### Register User
+POST {{BASE_URL}}/register
+Content-Type: application/json
+
+{
+  "name": "{{USER_NAME}}",
+  "email": "{{USER_EMAIL}}",
+  "password": "{{USER_PASSWORD}}"
+}
+
+> assert status == 201
+> assert body.status == "ok"

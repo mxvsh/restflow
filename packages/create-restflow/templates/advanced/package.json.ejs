@@ -1,0 +1,19 @@
+{
+  "name": "<%= name %>",
+  "version": "1.0.0",
+  "description": "Advanced API testing flows with multi-environment setup - created with Restflow",
+  "scripts": {
+    "test": "restflow run flows/",
+    "test:env": "restflow run flows/ --env .env",
+    "test:staging": "restflow run flows/ --env .env.staging",
+    "test:prod": "restflow run flows/ --env .env.production",
+    "test:verbose": "restflow run flows/ --verbose",
+    "test:json": "restflow run flows/ --format json",
+    "test:health": "restflow run flows/health/",
+    "test:users": "restflow run flows/users/",
+    "test:admin": "restflow run flows/admin/"
+  },
+  "devDependencies": {
+    "@restflow/cli": "^0.0.1"
+  }
+}
