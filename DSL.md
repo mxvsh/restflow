@@ -14,8 +14,8 @@ Content-Type: application/json
 
 {request body}
 
-ASSERT response.status == 200
-CAPTURE token = response.body.token
+> assert status == 200
+> capture token = body.token
 ```
 
 ## Core Components
@@ -83,73 +83,73 @@ Request body follows headers, separated by a blank line:
 
 ### 5. Assertions
 
-Assertions validate the response using the `ASSERT` keyword:
+Assertions validate the response using the `> assert` directive:
 
 ```
-ASSERT condition
+> assert condition
 ```
 
 #### Available Assertion Types:
 
 **Status Code**:
 ```
-ASSERT response.status == 200
-ASSERT response.status != 404
-ASSERT response.status >= 200
-ASSERT response.status < 300
+> assert status == 200
+> assert status != 404
+> assert status >= 200
+> assert status < 300
 ```
 
 **Response Body (JSONPath)**:
 ```
-ASSERT response.body.success == true
-ASSERT response.body.data.length > 0
-ASSERT response.body.user.email == "{{expectedEmail}}"
+> assert body.success == true
+> assert body.data.length > 0
+> assert body.user.email == "{{expectedEmail}}"
 ```
 
 **Response Headers**:
 ```
-ASSERT response.headers["content-type"] == "application/json"
-ASSERT response.headers.authorization exists
+> assert headers["content-type"] == "application/json"
+> assert headers.authorization != null
 ```
 
 **Regular Expressions**:
 ```
-ASSERT response.body.message matches "^Success"
-ASSERT response.body.id matches "\\d+"
+> assert body.message matches "^Success"
+> assert body.id matches "\\d+"
 ```
 
 **Existence Checks**:
 ```
-ASSERT response.body.token exists
-ASSERT response.body.error not exists
+> assert body.token != null
+> assert body.error == null
 ```
 
 ### 6. Variable Capture
 
-Capture values from responses using the `CAPTURE` keyword:
+Capture values from responses using the `> capture` directive:
 
 ```
-CAPTURE variableName = expression
+> capture variableName = expression
 ```
 
 #### Capture Sources:
 
 **From Response Body**:
 ```
-CAPTURE token = response.body.token
-CAPTURE userId = response.body.user.id
-CAPTURE count = response.body.data.length
+> capture token = body.token
+> capture userId = body.user.id
+> capture count = body.data.length
 ```
 
 **From Response Headers**:
 ```
-CAPTURE sessionId = response.headers["x-session-id"]
-CAPTURE location = response.headers.location
+> capture sessionId = headers["x-session-id"]
+> capture location = headers.location
 ```
 
 **From Status Code**:
 ```
-CAPTURE statusCode = response.status
+> capture statusCode = status
 ```
 
 ## Variable System
@@ -180,7 +180,7 @@ Authorization: Bearer {{token}}
   "email": "{{userEmail}}"
 }
 
-ASSERT response.body.id == "{{expectedId}}"
+> assert body.id == "{{expectedId}}"
 ```
 
 ### Built-in Variables
@@ -220,9 +220,9 @@ Content-Type: application/json
   "password": "password123"
 }
 
-ASSERT response.status == 201
-ASSERT response.body.success == true
-CAPTURE userId = response.body.user.id
+> assert status == 201
+> assert body.success == true
+> capture userId = body.user.id
 
 ### Login User
 POST /auth/login
@@ -233,17 +233,17 @@ Content-Type: application/json
   "password": "password123"
 }
 
-ASSERT response.status == 200
-ASSERT response.body.token exists
-CAPTURE token = response.body.token
+> assert status == 200
+> assert body.token != null
+> capture token = body.token
 
 ### Get User Profile
 GET /users/{{userId}}
 Authorization: Bearer {{token}}
 
-ASSERT response.status == 200
-ASSERT response.body.id == "{{userId}}"
-ASSERT response.body.email == "test@example.com"
+> assert status == 200
+> assert body.id == "{{userId}}"
+> assert body.email == "test@example.com"
 
 ### Update User Profile
 PUT /users/{{userId}}
@@ -254,8 +254,8 @@ Content-Type: application/json
   "name": "Updated Name"
 }
 
-ASSERT response.status == 200
-ASSERT response.body.name == "Updated Name"
+> assert status == 200
+> assert body.name == "Updated Name"
 ```
 
 ## Best Practices for LLMs
@@ -297,14 +297,14 @@ Content-Type: application/json
 
 {"email": "{{email}}", "password": "{{password}}"}
 
-ASSERT response.status == 200
-CAPTURE token = response.body.token
+> assert status == 200
+> capture token = body.token
 
 ### Authenticated Request
 GET /protected/resource
 Authorization: Bearer {{token}}
 
-ASSERT response.status == 200
+> assert status == 200
 ```
 
 ### CRUD Operations
@@ -315,14 +315,14 @@ Content-Type: application/json
 
 {"name": "Test Resource"}
 
-ASSERT response.status == 201
-CAPTURE resourceId = response.body.id
+> assert status == 201
+> capture resourceId = body.id
 
 ### Read Resource
 GET /resources/{{resourceId}}
 
-ASSERT response.status == 200
-ASSERT response.body.name == "Test Resource"
+> assert status == 200
+> assert body.name == "Test Resource"
 
 ### Update Resource
 PUT /resources/{{resourceId}}
@@ -330,12 +330,12 @@ Content-Type: application/json
 
 {"name": "Updated Resource"}
 
-ASSERT response.status == 200
+> assert status == 200
 
 ### Delete Resource
 DELETE /resources/{{resourceId}}
 
-ASSERT response.status == 204
+> assert status == 204
 ```
 
 ### Pagination Testing
@@ -343,15 +343,15 @@ ASSERT response.status == 204
 ### Get First Page
 GET /items?page=1&limit=10
 
-ASSERT response.status == 200
-ASSERT response.body.data.length <= 10
-CAPTURE totalPages = response.body.pagination.totalPages
+> assert status == 200
+> assert body.data.length <= 10
+> capture totalPages = body.pagination.totalPages
 
 ### Get Last Page
 GET /items?page={{totalPages}}&limit=10
 
-ASSERT response.status == 200
-ASSERT response.body.pagination.currentPage == {{totalPages}}
+> assert status == 200
+> assert body.pagination.currentPage == {{totalPages}}
 ```
 
 This DSL specification provides LLMs with comprehensive guidance for understanding and generating valid Restflow test files.
