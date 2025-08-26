@@ -103,7 +103,7 @@ export interface Environment {
 
 // Reporter configuration
 export interface ReporterOptions {
-	format: "pretty" | "json";
+	format?: "pretty" | "json" | "summary";
 	verbose?: boolean;
 	showHeaders?: boolean;
 	showBody?: boolean;
