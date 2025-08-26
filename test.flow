@@ -1,0 +1,16 @@
+### Get Status
+GET https://httpbin.org/status/200
+
+> assert status == 200
+
+### Post JSON
+POST https://httpbin.org/post
+Content-Type: application/json
+
+{
+  "name": "test",
+  "value": 123
+}
+
+> capture response_data = $.json
+> assert status == 200

@@ -1,0 +1,19 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "../http"
+    },
+    {
+      "path": "../parser"
+    },
+    {
+      "path": "../types"
+    },
+    {
+      "path": "./tsconfig.lib.json"
+    }
+  ]
+}
