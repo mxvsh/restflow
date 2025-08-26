@@ -10,7 +10,29 @@
 		"types": ["node"]
 	},
 	"include": ["src/**/*.ts"],
-	"references": [],
+	"references": [
+    {
+      "path": "../reporter/tsconfig.lib.json"
+    },
+    {
+      "path": "../assertions/tsconfig.lib.json"
+    },
+    {
+      "path": "../http/tsconfig.lib.json"
+    },
+    {
+      "path": "../environment/tsconfig.lib.json"
+    },
+    {
+      "path": "../variables/tsconfig.lib.json"
+    },
+    {
+      "path": "../parser/tsconfig.lib.json"
+    },
+    {
+      "path": "../types/tsconfig.lib.json"
+    }
+  ],
 	"exclude": [
 		"vite.config.ts",
 		"vite.config.mts",

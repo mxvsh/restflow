@@ -3,11 +3,32 @@
 	"files": [],
 	"include": [],
 	"references": [
-		{
-			"path": "./tsconfig.lib.json"
-		},
-		{
-			"path": "./tsconfig.spec.json"
-		}
-	]
+    {
+      "path": "../reporter"
+    },
+    {
+      "path": "../assertions"
+    },
+    {
+      "path": "../http"
+    },
+    {
+      "path": "../environment"
+    },
+    {
+      "path": "../variables"
+    },
+    {
+      "path": "../parser"
+    },
+    {
+      "path": "../types"
+    },
+    {
+      "path": "./tsconfig.lib.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
 }
