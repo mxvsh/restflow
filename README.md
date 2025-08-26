@@ -17,9 +17,13 @@ A powerful CLI tool for API testing and workflow automation using a simple, huma
 ### Installation
 
 ```bash
+# Create a new project
+pnpm create restflow my-api-tests
+
+# Or install CLI globally
 npm install -g @restflow/cli
 # or
-pnpm add @restflow/cli
+pnpm add -g @restflow/cli
 ```
 
 ### Basic Usage
