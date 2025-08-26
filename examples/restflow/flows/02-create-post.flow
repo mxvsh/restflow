@@ -1,0 +1,15 @@
+### Create Post
+POST {{BASE_URL}}/posts
+Content-Type: application/json
+
+{
+  "title": "foo",
+  "body": "bar",
+  "userId": 1
+}
+
+> assert status == 201
+> assert body.title == "foo"
+> assert body.body == "bar"
+> assert body.userId == 1
+> assert body.id != null

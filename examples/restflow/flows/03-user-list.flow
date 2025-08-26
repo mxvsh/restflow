@@ -1,0 +1,8 @@
+### User List
+GET {{BASE_URL}}/users
+
+> assert status == 200
+> assert body.length > 0
+> assert body[0].id != null
+> assert body[0].name != null
+> assert body[0].email != null

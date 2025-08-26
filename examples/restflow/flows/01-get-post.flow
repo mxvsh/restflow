@@ -1,0 +1,8 @@
+### Get Post
+GET https://jsonplaceholder.typicode.com/posts/1
+
+> assert status == 200
+> assert body.id == 1
+> assert body.title != null
+> assert body.body != null
+> assert body.userId != null
