@@ -43,7 +43,7 @@ function parseStep(section: string): FlowStep {
 	const lines = section
 		.split("\n")
 		.map((line) => line.trim())
-		.filter((line) => line);
+		.filter((line) => line && !line.startsWith("#")); // Filter out comments
 
 	if (lines.length === 0) {
 		throw new Error("Empty step section");

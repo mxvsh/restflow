@@ -62,6 +62,7 @@ export function extractVariables(template: string): string[] {
 	const pattern = /\{\{(\w+)\}\}/g;
 	let match: RegExpExecArray | null;
 
+	// biome-ignore lint/suspicious/noAssignInExpressions: _
 	while ((match = pattern.exec(template)) !== null) {
 		if (!variables.includes(match[1])) {
 			variables.push(match[1]);
