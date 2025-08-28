@@ -3,7 +3,6 @@
 	"type": "module",
 	"scripts": {
 		"serve": "tsx watch src/index.ts",
-		"build": "tsc",
 		"start": "node dist/index.js",
 		"test:flow": "restflow run flows --env .env"
 	},
