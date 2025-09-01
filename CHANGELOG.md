@@ -1,3 +1,13 @@
+# 1.0.0 (2025-09-01)
+
+### 🚀 Features
+
+- implement built-in variables for dynamic values ([46cebaa](https://github.com/mxvsh/restflow/commit/46cebaa))
+
+### ❤️ Thank You
+
+- mxvsh @mxvsh
+
 ## 0.0.1-alpha.2 (2025-09-01)
 
 ### 🩹 Fixes
