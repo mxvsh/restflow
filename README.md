@@ -40,30 +40,26 @@ pnpm add -g @restflow/cli
 1. **Create a flow file** (`api-test.flow`):
 
 ```flow
-### Health Check
-GET https://api.example.com/health
+### Get Todo
+GET https://jsonplaceholder.typicode.com/todos/1
 
 > assert status == 200
-> assert body.status == "ok"
+> assert body.id == 1
+> assert body.title contains "delectus"
 
-### Create User
-POST https://api.example.com/users
+### Create Post
+POST https://jsonplaceholder.typicode.com/posts
 Content-Type: application/json
 
 {
-  "name": "John Doe",
-  "email": "john@example.com"
+  "title": "My New Post",
+  "body": "This is the content of my post",
+  "userId": 1
 }
 
 > assert status == 201
-> assert body.email == "john@example.com"
-> capture userId = body.id
-
-### Get User
-GET https://api.example.com/users/{{userId}}
-
-> assert status == 200
-> assert body.name == "John Doe"
+> assert body.title == "My New Post"
+> capture postId = body.id
 ```
 
 2. **Run the flow**:
