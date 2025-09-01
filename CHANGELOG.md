@@ -1,3 +1,13 @@
+## 0.0.1-alpha.2 (2025-09-01)
+
+### 🩹 Fixes
+
+- use proper version in `create-restflow` ([e9a8e42](https://github.com/mxvsh/restflow/commit/e9a8e42))
+
+### ❤️ Thank You
+
+- mxvsh @mxvsh
+
 ## 0.0.1-alpha.1 (2025-08-28)
 
 ### 🚀 Features
