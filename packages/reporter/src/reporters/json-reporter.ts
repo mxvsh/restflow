@@ -45,8 +45,8 @@ export class JSONReporter implements Reporter {
 		if (this.flowData) {
 			const stepData = {
 				name: result.step.name,
-				method: result.step.request.method,
-				url: result.step.request.url,
+				method: result.request.method,
+				url: result.request.url,
 				status: result.response?.status,
 				duration: result.duration,
 				success: !result.error,
@@ -67,8 +67,8 @@ export class JSONReporter implements Reporter {
 				(stepData as any).responseBody = this.parseBodySafely(result.response.body);
 			}
 
-			if (this.options.showBody && result.step.request.body) {
-				(stepData as any).requestBody = this.parseBodySafely(result.step.request.body);
+			if (this.options.showBody && result.request.body) {
+				(stepData as any).requestBody = this.parseBodySafely(result.request.body);
 			}
 
 			this.flowData.steps.push(stepData);

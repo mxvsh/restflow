@@ -45,18 +45,18 @@ export class ConsoleReporter implements Reporter {
 	}
 
 	onStepComplete(result: StepResult): void {
-		const { step, response, error, directives, duration } = result;
+		const { request, response, error, directives, duration } = result;
 
 		if (error) {
 			const errorIcon = this.options.colors
 				? pc.red(figures.cross)
 				: figures.cross;
 			const method = this.options.colors
-				? pc.bold(step.request.method)
-				: step.request.method;
+				? pc.bold(request.method)
+				: request.method;
 			const url = this.options.colors
-				? pc.dim(step.request.url)
-				: step.request.url;
+				? pc.dim(request.url)
+				: request.url;
 			const errorMsg = this.options.colors
 				? pc.red(error.message)
 				: error.message;
@@ -68,10 +68,10 @@ export class ConsoleReporter implements Reporter {
 			const successIcon = this.options.colors
 				? pc.green(figures.tick)
 				: figures.tick;
-			const method = this.getMethodIcon(step.request.method);
+			const method = this.getMethodIcon(request.method);
 			const url = this.options.colors
-				? pc.dim(step.request.url)
-				: step.request.url;
+				? pc.dim(request.url)
+				: request.url;
 			const status = this.formatStatusCode(response.status);
 			const timing = this.options.showTimings
 				? this.options.colors
