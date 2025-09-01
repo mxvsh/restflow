@@ -1,4 +1,5 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: _ */
+import { randomUUID } from "node:crypto";
 import type { ExecutionContext, HttpRequest } from "@restflow/types";
 
 export interface VariableResolver {
@@ -8,18 +9,44 @@ export interface VariableResolver {
 
 export class DefaultVariableResolver implements VariableResolver {
 	private static readonly VARIABLE_PATTERN = /\{\{(\w+)\}\}/g;
+	public static readonly BUILTIN_VARIABLES = new Set([
+		'uuid', 'timestamp', 'randomString', 'randomNumber'
+	]);
 
 	resolve(template: string, context: ExecutionContext): string {
 		return template.replace(
 			DefaultVariableResolver.VARIABLE_PATTERN,
 			(_, variableName) => {
+				// First check if variable exists in context (env, captured, or CLI variables)
 				const value = context.variables[variableName];
-				if (value === undefined) {
-					throw new VariableError(`Variable '${variableName}' is not defined`);
+				if (value !== undefined) {
+					return String(value);
 				}
-				return String(value);
+				
+				// If not found and it's a built-in variable, generate it
+				if (DefaultVariableResolver.BUILTIN_VARIABLES.has(variableName)) {
+					return this.generateBuiltinVariable(variableName);
+				}
+				
+				// Otherwise throw error
+				throw new VariableError(`Variable '${variableName}' is not defined`);
 			},
 		);
+	}
+
+	private generateBuiltinVariable(variableName: string): string {
+		switch (variableName) {
+			case 'uuid':
+				return randomUUID();
+			case 'timestamp':
+				return String(Math.floor(Date.now() / 1000));
+			case 'randomString':
+				return Math.random().toString(36).substring(2, 15);
+			case 'randomNumber':
+				return String(Math.floor(Math.random() * 1000000));
+			default:
+				throw new VariableError(`Unknown built-in variable '${variableName}'`);
+		}
 	}
 
 	resolveRequest(request: HttpRequest, context: ExecutionContext): HttpRequest {
@@ -84,6 +111,11 @@ export function validateVariables(
 	const requiredVariables = extractVariables(template);
 
 	for (const variable of requiredVariables) {
+		// Skip built-in variables as they're always available
+		if (DefaultVariableResolver.BUILTIN_VARIABLES.has(variable)) {
+			continue;
+		}
+		
 		if (!(variable in context.variables)) {
 			missingVariables.push(variable);
 		}

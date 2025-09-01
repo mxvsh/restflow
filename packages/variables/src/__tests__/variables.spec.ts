@@ -1,5 +1,5 @@
 import type { ExecutionContext, HttpRequest } from "@restflow/types";
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import {
 	createExecutionContext,
 	DefaultVariableResolver,
@@ -79,6 +79,57 @@ describe("DefaultVariableResolver", () => {
 			const template = "{{token}}-{{token}}-{{token}}";
 
 			expect(resolver.resolve(template, context)).toBe("abc123-abc123-abc123");
+		});
+
+		it("should resolve built-in uuid variable", () => {
+			const template = "id-{{uuid}}";
+			const result = resolver.resolve(template, { variables: {}, responses: [] });
+
+			expect(result).toMatch(/^id-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
+		});
+
+		it("should resolve built-in timestamp variable", () => {
+			const template = "ts-{{timestamp}}";
+			const result = resolver.resolve(template, { variables: {}, responses: [] });
+
+			expect(result).toMatch(/^ts-\d+$/);
+			expect(Number(result.split('-')[1])).toBeGreaterThan(0);
+		});
+
+		it("should resolve built-in randomString variable", () => {
+			const template = "str-{{randomString}}";
+			const result = resolver.resolve(template, { variables: {}, responses: [] });
+
+			expect(result).toMatch(/^str-[a-z0-9]+$/);
+			expect(result.split('-')[1].length).toBeGreaterThan(0);
+		});
+
+		it("should resolve built-in randomNumber variable", () => {
+			const template = "num-{{randomNumber}}";
+			const result = resolver.resolve(template, { variables: {}, responses: [] });
+
+			expect(result).toMatch(/^num-\d+$/);
+			expect(Number(result.split('-')[1])).toBeGreaterThanOrEqual(0);
+		});
+
+		it("should allow environment variables to override built-in variables", () => {
+			const template = "{{uuid}}-{{timestamp}}";
+			const contextWithOverrides = {
+				variables: { uuid: "custom-uuid", timestamp: "custom-timestamp" },
+				responses: []
+			};
+
+			expect(resolver.resolve(template, contextWithOverrides)).toBe("custom-uuid-custom-timestamp");
+		});
+
+		it("should generate different values for built-in variables on each call", () => {
+			const template = "{{uuid}}";
+			const emptyContext = { variables: {}, responses: [] };
+			
+			const result1 = resolver.resolve(template, emptyContext);
+			const result2 = resolver.resolve(template, emptyContext);
+
+			expect(result1).not.toBe(result2);
 		});
 	});
 
@@ -223,6 +274,12 @@ describe("utility functions", () => {
 				"path",
 				"id",
 			]);
+		});
+
+		it("should not report built-in variables as missing", () => {
+			const template = "{{baseUrl}}/{{uuid}}/{{timestamp}}/{{unknownVar}}";
+
+			expect(validateVariables(template, context)).toEqual(["unknownVar"]);
 		});
 	});
 
