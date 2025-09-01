@@ -1,3 +1,13 @@
+## 1.1.0 (2025-09-01)
+
+### 🚀 Features
+
+- show resolved variable values in console output ([5daf77b](https://github.com/mxvsh/restflow/commit/5daf77b))
+
+### ❤️ Thank You
+
+- mxvsh @mxvsh
+
 # 1.0.0 (2025-09-01)
 
 ### 🚀 Features
