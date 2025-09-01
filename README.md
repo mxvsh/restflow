@@ -1,6 +1,15 @@
-# Restflow
+<p align="center">
+  <a href="https://github.com/drivebase/drivebase">
+    <img src="https://github.com/user-attachments/assets/6dc6f404-4c2c-4be7-8371-012a96b8c05d" width="80px" alt="Restflow Logo" />
+  </a>
+</p>
 
+<h3 align="center">
+  Restflow
+</h3>
+<p align="center">
 A powerful CLI tool for API testing and workflow automation using a simple, human-readable DSL.
+</p>
 
 ## Features
 
