@@ -1,9 +1,9 @@
-import fs from "fs-extra";
-import path from "path";
-import { spawn } from "child_process";
-import pc from "picocolors";
+import { spawn } from "node:child_process";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import ejs from "ejs";
-import { fileURLToPath } from "url";
+import fs from "fs-extra";
+import pc from "picocolors";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -14,7 +14,9 @@ export interface CreateProjectOptions {
 	installDeps: boolean;
 }
 
-export async function createProject(options: CreateProjectOptions): Promise<void> {
+export async function createProject(
+	options: CreateProjectOptions,
+): Promise<void> {
 	const { name, template, installDeps } = options;
 	const projectPath = path.resolve(process.cwd(), name);
 
@@ -38,18 +40,37 @@ export async function createProject(options: CreateProjectOptions): Promise<void
 	}
 }
 
-async function copyTemplateFiles(projectPath: string, template: string, templateData: any): Promise<void> {
+async function copyTemplateFiles(
+	projectPath: string,
+	template: string,
+	templateData: any,
+): Promise<void> {
 	const templatePath = path.resolve(__dirname, "../../templates", template);
-	
+
 	// Ensure template directory exists
 	if (!(await fs.pathExists(templatePath))) {
 		throw new Error(`Template "${template}" not found`);
 	}
 
-	await copyDirectory(templatePath, projectPath, templateData);
+	// Get create-restflow version from package.json
+	const packageJsonPath = path.resolve(__dirname, "../../package.json");
+	const packageJson = await fs.readJson(packageJsonPath);
+	const restflowVersion = packageJson.version;
+
+	// Add version to template data
+	const enhancedTemplateData = {
+		...templateData,
+		restflowVersion,
+	};
+
+	await copyDirectory(templatePath, projectPath, enhancedTemplateData);
 }
 
-async function copyDirectory(srcDir: string, destDir: string, templateData: any): Promise<void> {
+async function copyDirectory(
+	srcDir: string,
+	destDir: string,
+	templateData: any,
+): Promise<void> {
 	const entries = await fs.readdir(srcDir, { withFileTypes: true });
 
 	for (const entry of entries) {
