@@ -40,10 +40,16 @@ export function parseFlow(content: string): ParseResult {
 }
 
 function parseStep(section: string): FlowStep {
-	const lines = section
-		.split("\n")
-		.map((line) => line.trim())
-		.filter((line) => line && !line.startsWith("#")); // Filter out comments
+	const rawLines = section.split("\n");
+	let bodyStarted = false;
+	const lines = rawLines
+		.map((line) => {
+			if (line.trim().startsWith("{") || line.trim().startsWith("[")) {
+				bodyStarted = true;
+			}
+			return bodyStarted ? line : line.trim();
+		})
+		.filter((line) => line.trim() && !line.trim().startsWith("#")); // Filter out comments
 
 	if (lines.length === 0) {
 		throw new Error("Empty step section");
