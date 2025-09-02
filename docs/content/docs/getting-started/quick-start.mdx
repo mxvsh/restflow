@@ -1,0 +1,137 @@
+---
+title: Quick Start
+description: Get started with Restflow in 5 minutes
+---
+
+Create and run your first API test in minutes.
+
+## 1. Create Your First Flow
+
+Create a new file called `api-test.flow`:
+
+```flow
+### Test User API
+GET /users/1
+Host: jsonplaceholder.typicode.com
+
+> assert status == 200
+> assert body.id == 1
+> assert body.name != null
+```
+
+## 2. Run the Flow
+
+Execute your test:
+
+```bash
+restflow run api-test.flow
+```
+
+You should see output like:
+
+```
+✓ Test User API
+  ✓ GET /users/1 (200ms)
+  ✓ status == 200
+  ✓ body.id == 1  
+  ✓ body.name != null
+
+Tests: 1 passed, 0 failed
+```
+
+## 3. Add Variables
+
+Make your tests dynamic with variables:
+
+```flow
+### Create and Get User
+POST /users
+Host: jsonplaceholder.typicode.com
+Content-Type: application/json
+
+{
+  "name": "{{randomString}}",
+  "email": "test-{{uuid}}@example.com"
+}
+
+> capture body.id as userId
+
+### Get Created User
+GET /users/{{userId}}
+Host: jsonplaceholder.typicode.com
+
+> assert status == 200
+> assert body.id == {{userId}}
+```
+
+## 4. Environment Configuration
+
+Create `.env` file for environment-specific settings:
+
+```bash
+# .env
+BASE_URL=https://jsonplaceholder.typicode.com
+API_KEY=your-api-key
+```
+
+Update your flow:
+
+```flow
+### Get User with Environment
+GET /users/1
+Authorization: Bearer {{API_KEY}}
+
+> assert status == 200
+```
+
+Run with environment:
+
+```bash
+restflow run api-test.flow --env .env
+```
+
+## 5. Multiple Output Formats
+
+**JSON Output:**
+```bash
+restflow run api-test.flow --output json
+```
+
+**Summary View:**
+```bash
+restflow run api-test.flow --output summary
+```
+
+## Common Patterns
+
+**Testing API Endpoints:**
+```flow
+### Test Multiple Endpoints
+GET /users
+> assert status == 200
+> assert body.length > 0
+
+### Check Individual User
+GET /users/1
+> assert body.name == "Leanne Graham"
+```
+
+**Using Built-in Variables:**
+```flow
+### Dynamic Test Data
+POST /posts
+Content-Type: application/json
+
+{
+  "title": "Test Post {{timestamp}}",
+  "userId": {{randomNumber}}
+}
+
+> assert status == 201
+```
+
+## Next Steps
+
+- [Set up a complete project](/docs/getting-started/project-setup)
+- [Learn the Flow syntax](/docs/writing-flows/basics)
+- [Explore variables and environments](/docs/writing-flows/variables)

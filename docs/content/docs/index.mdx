@@ -1,0 +1,35 @@
+---
+title: Documentation
+description: Complete guide to using Restflow for API testing
+---
+
+Welcome to the complete guide for Restflow - a powerful CLI tool for API testing with a human-readable DSL.
+
+## Quick Navigation
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+  <a href="/docs/getting-started/introduction" className="block p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800">
+    <h3 className="font-semibold">Getting Started</h3>
+    <p className="text-sm text-gray-600 dark:text-gray-400">Learn the basics and get up and running quickly</p>
+  </a>
+
+  <a href="/docs/writing-flows/basics" className="block p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800">
+    <h3 className="font-semibold">Writing Flows</h3>
+    <p className="text-sm text-gray-600 dark:text-gray-400">Master the flow syntax and language features</p>
+  </a>
+</div>
+
+## What is Restflow?
+
+Restflow is a CLI tool that makes API testing simple and readable. Write your tests in plain text `.flow` files using an intuitive syntax that anyone can understand.
+
+```flow
+### Get User Profile
+GET /users/123
+Authorization: Bearer {{token}}
+
+> assert status == 200
+> assert body.name != null
+```
+
+Get started with the [Introduction](/docs/getting-started/introduction) or jump straight to [Installation](/docs/getting-started/installation).

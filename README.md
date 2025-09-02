@@ -39,7 +39,7 @@ pnpm add -g @restflow/cli
 
 1. **Create a flow file** (`api-test.flow`):
 
-```flow
+```bash
 ### Get Todo
 GET https://jsonplaceholder.typicode.com/todos/1
 
@@ -98,7 +98,7 @@ Duration: 549ms
 
 ### Basic Structure
 
-```flow
+```bash
 ### Step Name
 HTTP_METHOD url
 Header-Name: header-value
@@ -111,7 +111,7 @@ request-body
 
 ### HTTP Methods
 
-```flow
+```bash
 ### GET Request
 GET https://api.example.com/users
 
@@ -137,7 +137,7 @@ Authorization: Bearer {{token}}
 ### Directives
 
 #### Assertions
-```flow
+```bash
 > assert status == 200
 > assert status != 404
 > assert body.name == "John"
@@ -146,7 +146,7 @@ Authorization: Bearer {{token}}
 ```
 
 #### Variable Capture
-```flow
+```bash
 > capture token = body.access_token
 > capture userId = body.user.id
 > capture firstUser = body.users[0].name
@@ -156,7 +156,7 @@ Authorization: Bearer {{token}}
 
 Use captured variables or environment variables:
 
-```flow
+```bash
 ### Login
 POST https://api.example.com/auth/login
 Content-Type: application/json
@@ -177,7 +177,7 @@ Authorization: Bearer {{token}}
 
 Create a `.env` file:
 
-```env
+```bash
 BASE_URL=https://api.staging.example.com
 API_KEY=your-secret-key
 EMAIL=test@example.com
@@ -186,7 +186,7 @@ PASSWORD=test123
 
 Use in flows:
 
-```flow
+```bash
 ### API Call
 GET {{BASE_URL}}/data
 X-API-Key: {{API_KEY}}

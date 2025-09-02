@@ -1,0 +1,190 @@
+---
+title: Project Setup
+description: Organize your API tests in a structured project
+---
+
+Learn how to organize and structure your Restflow tests for larger projects.
+
+## Project Structure
+
+Recommended directory structure for API testing projects:
+
+```
+my-api-tests/
+├── flows/
+│   ├── auth/
+│   │   ├── login.flow
+│   │   └── logout.flow
+│   ├── users/
+│   │   ├── create-user.flow
+│   │   ├── get-user.flow
+│   │   └── update-user.flow
+│   └── orders/
+│       ├── create-order.flow
+│       └── list-orders.flow
+├── environments/
+│   ├── .env.development
+│   ├── .env.staging
+│   └── .env.production
+├── package.json
+└── README.md
+```
+
+## Initialize Project
+
+Create a new testing project:
+
+```bash
+# Using create-restflow
+npm create restflow@latest my-api-tests
+cd my-api-tests
+
+# Or manually
+mkdir my-api-tests
+cd my-api-tests
+npm init -y
+npm install --save-dev @restflow/cli
+```
+
+## Environment Configuration
+
+Set up multiple environments for different testing stages:
+
+**environments/.env.development**
+```bash
+BASE_URL=http://localhost:3000
+API_KEY=dev-key-123
+DATABASE_URL=postgres://localhost/test_db
+```
+
+**environments/.env.staging**
+```bash
+BASE_URL=https://staging-api.example.com
+API_KEY=staging-key-456
+DATABASE_URL=postgres://staging-db/test_db
+```
+
+**environments/.env.production**
+```bash
+BASE_URL=https://api.example.com
+API_KEY=prod-key-789
+DATABASE_URL=postgres://prod-db/test_db
+```
+
+## Package.json Scripts
+
+Add convenient npm scripts:
+
+```json
+{
+  "name": "my-api-tests",
+  "scripts": {
+    "test": "restflow run flows/**/*.flow",
+    "test:dev": "restflow run flows/**/*.flow --env environments/.env.development",
+    "test:staging": "restflow run flows/**/*.flow --env environments/.env.staging",
+    "test:auth": "restflow run flows/auth/*.flow --env environments/.env.development",
+    "test:users": "restflow run flows/users/*.flow --env environments/.env.development",
+    "test:ci": "restflow run flows/**/*.flow --env environments/.env.staging --output json"
+  },
+  "devDependencies": {
+    "@restflow/cli": "^1.0.0"
+  }
+}
+```
+
+## Running Tests
+
+**Run all tests:**
+```bash
+npm test
+```
+
+**Environment-specific tests:**
+```bash
+npm run test:dev
+npm run test:staging
+```
+
+**Feature-specific tests:**
+```bash
+npm run test:auth
+npm run test:users
+```
+
+## Example Flow Files
+
+**flows/auth/login.flow**
+```flow
+### User Login
+POST /auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+> assert status == 200
+> assert body.token != null
+> capture body.token as authToken
+```
+
+**flows/users/get-user.flow**
+```flow
+### Get User Profile
+GET /users/me
+Authorization: Bearer {{authToken}}
+
+> assert status == 200
+> assert body.email == "test@example.com"
+```
+
+## CI/CD Integration
+
+**GitHub Actions (.github/workflows/api-tests.yml)**
+```yaml
+name: API Tests
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - run: npm install
+      - run: npm run test:ci
+        env:
+          API_KEY: ${{ secrets.STAGING_API_KEY }}
+```
+
+## Best Practices
+
+**1. Organize by Feature**
+- Group related flows in directories
+- Use descriptive file names
+- Keep flows focused and small
+
+**2. Environment Management**
+- Use separate env files for each environment
+- Never commit production credentials
+- Use CI/CD secrets for sensitive values
+
+**3. Flow Dependencies**
+- Use captures to pass data between flows
+- Keep flows as independent as possible
+- Use setup/teardown flows when needed
+
+**4. Documentation**
+- Add comments to complex flows
+- Document environment variables
+- Maintain a project README
+
+## Next Steps
+
+Now that your project is set up, learn more about:
+- [Writing effective flows](/docs/writing-flows/basics)
+- [Working with variables](/docs/writing-flows/variables)
+- [Advanced assertions](/docs/writing-flows/assertions)

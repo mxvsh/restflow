@@ -1,0 +1,58 @@
+---
+title: Introduction
+description: What is Restflow and why use it for API testing
+---
+
+Restflow is a powerful CLI tool for API testing that uses a simple, human-readable DSL. Write tests in plain text `.flow` files and run them from the command line.
+
+## Why Restflow?
+
+- **Simple**: Write tests in plain text with intuitive syntax
+- **Fast**: Built-in variable system and concurrent execution
+- **Flexible**: Support for multiple environments and output formats
+- **Developer-friendly**: Git-friendly test files and clear error messages
+
+## Key Features
+
+### Human-Readable DSL
+```flow
+### Get User Profile
+GET /users/123
+Authorization: Bearer {{token}}
+
+> assert status == 200
+> assert body.name == "John Doe"
+```
+
+### Built-in Variables
+Generate dynamic test data with built-in variables:
+- `{{uuid}}` - Unique identifiers
+- `{{timestamp}}` - Current timestamp
+- `{{randomString}}` - Random text
+- `{{randomNumber}}` - Random numbers
+
+### Environment Management
+Use `.env` files for different environments:
+
+```bash
+# .env.staging
+BASE_URL=https://staging.api.com
+API_KEY=staging-key-123
+```
+
+### Multiple Output Formats
+- **Console**: Colored, progress-friendly output
+- **JSON**: Machine-readable for CI/CD
+- **Summary**: Concise tabular results
+
+## Use Cases
+
+- **API Testing**: Validate REST API endpoints
+- **E2E Testing**: Test complete user journeys
+- **CI/CD Integration**: Automated testing in pipelines
+- **Environment Validation**: Verify deployments across environments
+- **Load Testing**: Basic performance validation
+
+## Next Steps
+
+Ready to get started? [Install Restflow](/docs/getting-started/installation) and create your first flow.

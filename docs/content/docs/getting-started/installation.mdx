@@ -1,0 +1,95 @@
+---
+title: Installation
+description: How to install Restflow CLI tool
+---
+
+Get Restflow up and running in minutes with these simple installation methods.
+
+## Prerequisites
+
+- **Node.js**: Version 18 or higher
+- **Package Manager**: npm, yarn, or pnpm
+
+## Installation Methods
+
+### Global Installation (Recommended)
+
+Install Restflow globally to use it anywhere:
+
+```bash
+npm install -g @restflow/cli
+```
+
+Verify the installation:
+
+```bash
+restflow --version
+```
+
+### Project-specific Installation
+
+Install Restflow in your project:
+
+```bash
+npm install --save-dev @restflow/cli
+```
+
+Use with npx:
+
+```bash
+npx restflow --version
+```
+
+### Using Different Package Managers
+
+**Yarn:**
+```bash
+# Global
+yarn global add @restflow/cli
+
+# Project-specific
+yarn add --dev @restflow/cli
+```
+
+**pnpm:**
+```bash
+# Global
+pnpm install -g @restflow/cli
+
+# Project-specific
+pnpm add -D @restflow/cli
+```
+
+## Verification
+
+After installation, verify Restflow is working:
+
+```bash
+restflow --help
+```
+
+You should see the help menu with available commands and options.
+
+## Update
+
+Keep Restflow up to date:
+
+```bash
+npm update -g @restflow/cli
+```
+
+## Troubleshooting
+
+**Permission Issues (macOS/Linux):**
+```bash
+sudo npm install -g @restflow/cli
+```
+
+**Clear npm cache:**
+```bash
+npm cache clean --force
+```
+
+## Next Steps
+
+Ready to create your first flow? Continue to [Quick Start](/docs/getting-started/quick-start).

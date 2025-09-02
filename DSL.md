@@ -197,7 +197,7 @@ Built-in variables generate dynamic values and are always available:
 
 **Important**: Each use of a built-in variable generates a unique value. If you need consistency, capture the value first:
 
-```flow
+```bash
 ### Step 1
 GET /api/data
 X-Request-ID: {{uuid}}
@@ -214,7 +214,7 @@ X-Related-Request: {{requestId}}
 Environment variables support variable references and built-in variables:
 
 **.env file**:
-```env
+```bash
 # Basic variables
 BASE_URL=https://api.example.com
 API_KEY=secret123
@@ -243,12 +243,12 @@ environment=staging
 When `BASE_URL` is defined in your environment file, relative URLs in flows are automatically prefixed:
 
 **.env**:
-```env
+```bash
 BASE_URL=https://api.example.com
 ```
 
 **Flow**:
-```flow
+```bash
 ### Uses BASE_URL - becomes https://api.example.com/users
 GET /users
 
@@ -260,7 +260,7 @@ GET /posts/{{postId}}
 ```
 
 **Dynamic BASE_URL**:
-```env
+```bash
 BASE_URL=https://{{env}}.example.com
 env=staging
 # Results in: https://staging.example.com
@@ -286,13 +286,13 @@ GET /endpoint
 ### Basic Example with Built-in Variables
 
 **.env**:
-```env
+```bash
 BASE_URL=https://jsonplaceholder.typicode.com
 API_KEY=secret123
 ```
 
 **Flow**:
-```flow
+```bash
 # API Testing with Built-in Variables
 
 ### Create Post with Dynamic Data
@@ -322,7 +322,7 @@ X-Request-ID: {{uuid}}
 ### Advanced Example with Variable Chaining
 
 **.env**:
-```env
+```bash
 # Environment setup
 BASE_URL=https://{{environment}}.api.example.com
 environment=staging
@@ -338,7 +338,7 @@ ENDPOINT_BASE={{BASE_URL}}/{{API_VERSION}}
 ```
 
 **Flow**:
-```flow
+```bash
 # User Registration and Login Flow
 
 ### Register New User
@@ -440,7 +440,7 @@ X-Session-ID: {{SESSION_ID}}
 ## Common Patterns
 
 ### Authentication Flow
-```flow
+```bash
 ### Login
 POST /auth/login
 Content-Type: application/json
@@ -458,7 +458,7 @@ Authorization: Bearer {{token}}
 ```
 
 ### CRUD Operations
-```flow
+```bash
 ### Create Resource
 POST /resources
 Content-Type: application/json
@@ -489,7 +489,7 @@ DELETE /resources/{{resourceId}}
 ```
 
 ### Pagination Testing
-```flow
+```bash
 ### Get First Page
 GET /items?page=1&limit=10
 
