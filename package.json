@@ -4,8 +4,8 @@
 	"license": "MIT",
 	"scripts": {
 		"lint": "biome check",
-		"test": "vitest",
-		"format": "biome format --write"
+		"format": "biome format --write",
+		"test": "nx run-many -t test --exclude restflow,@restflow/source"
 	},
 	"private": true,
 	"devDependencies": {

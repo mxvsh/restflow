@@ -39,4 +39,88 @@ describe("DefaultVariableResolver", () => {
 			"https://jsonplaceholder.typicode.com/user",
 		);
 	});
+
+	it("should prefix relative URLs with BASE_URL", () => {
+		const context = createExecutionContext({
+			BASE_URL: "https://api.example.com",
+		});
+		const request = {
+			method: "GET" as const,
+			url: "/api/users",
+		};
+		const resolvedRequest = resolver.resolveRequest(request, context);
+		expect(resolvedRequest.url).toBe("https://api.example.com/api/users");
+	});
+
+	it("should handle BASE_URL with trailing slash", () => {
+		const context = createExecutionContext({
+			BASE_URL: "https://api.example.com/",
+		});
+		const request = {
+			method: "GET" as const,
+			url: "/api/users",
+		};
+		const resolvedRequest = resolver.resolveRequest(request, context);
+		expect(resolvedRequest.url).toBe("https://api.example.com/api/users");
+	});
+
+	it("should handle relative path without leading slash", () => {
+		const context = createExecutionContext({
+			BASE_URL: "https://api.example.com",
+		});
+		const request = {
+			method: "GET" as const,
+			url: "api/users",
+		};
+		const resolvedRequest = resolver.resolveRequest(request, context);
+		expect(resolvedRequest.url).toBe("https://api.example.com/api/users");
+	});
+
+	it("should not prefix absolute URLs with BASE_URL", () => {
+		const context = createExecutionContext({
+			BASE_URL: "https://api.example.com",
+		});
+		const request = {
+			method: "GET" as const,
+			url: "https://different.api.com/users",
+		};
+		const resolvedRequest = resolver.resolveRequest(request, context);
+		expect(resolvedRequest.url).toBe("https://different.api.com/users");
+	});
+
+	it("should work with variables in relative URLs and BASE_URL", () => {
+		const context = createExecutionContext({
+			BASE_URL: "https://{{env}}.example.com",
+			env: "staging",
+			userId: "123",
+		});
+		const request = {
+			method: "GET" as const,
+			url: "/api/users/{{userId}}",
+		};
+		const resolvedRequest = resolver.resolveRequest(request, context);
+		expect(resolvedRequest.url).toBe("https://staging.example.com/api/users/123");
+	});
+
+	it("should use relative path as-is when no BASE_URL is set", () => {
+		const context = createExecutionContext();
+		const request = {
+			method: "GET" as const,
+			url: "/api/users",
+		};
+		const resolvedRequest = resolver.resolveRequest(request, context);
+		expect(resolvedRequest.url).toBe("/api/users");
+	});
+
+	it("should handle BASE_URL with HTTPS protocol correctly", () => {
+		const context = createExecutionContext({
+			BASE_URL: "https://secure.api.com",
+		});
+		const request = {
+			method: "POST" as const,
+			url: "/secure/endpoint",
+		};
+		const resolvedRequest = resolver.resolveRequest(request, context);
+		expect(resolvedRequest.url).toBe("https://secure.api.com/secure/endpoint");
+	});
 });
