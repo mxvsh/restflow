@@ -1,40 +1,40 @@
 {
-	"name": "@restflow/cli",
-	"version": "1.1.0",
-	"type": "module",
-	"main": "./dist/index.js",
-	"module": "./dist/index.js",
-	"types": "./dist/index.d.ts",
-	"exports": {
-		"./package.json": "./package.json",
-		".": {
-			"development": "./src/index.ts",
-			"types": "./dist/index.d.ts",
-			"import": "./dist/index.js",
-			"default": "./dist/index.js"
-		}
-	},
-	"files": [
-		"dist",
-		"!**/*.tsbuildinfo"
-	],
-	"bin": {
-		"restflow": "./dist/bin/restflow.js"
-	},
-	"dependencies": {
-		"@clack/prompts": "^0.11.0",
-		"@restflow/engine": "workspace:*",
-		"@restflow/environment": "workspace:*",
-		"@restflow/http": "workspace:*",
-		"@restflow/parser": "workspace:*",
-		"@restflow/reporter": "workspace:*",
-		"@restflow/types": "workspace:*",
-		"@restflow/utils": "workspace:*",
-		"commander": "^14.0.0",
-		"figures": "^6.1.0",
-		"glob": "^10.3.10",
-		"picocolors": "^1.1.1",
-		"strip-ansi": "^7.1.0",
-		"tslib": "^2.3.0"
-	}
+  "name": "@restflow/cli",
+  "version": "1.1.1",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "development": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "!**/*.tsbuildinfo"
+  ],
+  "bin": {
+    "restflow": "./dist/bin/restflow.js"
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.11.0",
+    "@restflow/engine": "workspace:*",
+    "@restflow/environment": "workspace:*",
+    "@restflow/http": "workspace:*",
+    "@restflow/parser": "workspace:*",
+    "@restflow/reporter": "workspace:*",
+    "@restflow/types": "workspace:*",
+    "@restflow/utils": "workspace:*",
+    "commander": "^14.0.0",
+    "figures": "^6.1.0",
+    "glob": "^10.3.10",
+    "picocolors": "^1.1.1",
+    "strip-ansi": "^7.1.0",
+    "tslib": "^2.3.0"
+  }
 }

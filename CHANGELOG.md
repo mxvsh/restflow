@@ -1,3 +1,17 @@
+## 1.1.1 (2025-09-02)
+
+### 🚀 Features
+
+- add BASE_URL support for relative URL prefixing ([19c8f40](https://github.com/mxvsh/restflow/commit/19c8f40))
+
+### 🩹 Fixes
+
+- resolve linting issues and improve type safety ([97e3c36](https://github.com/mxvsh/restflow/commit/97e3c36))
+
+### ❤️ Thank You
+
+- mxvsh @mxvsh
+
 ## 1.1.0 (2025-09-01)
 
 ### 🚀 Features
