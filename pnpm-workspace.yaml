@@ -2,5 +2,6 @@ packages:
   - "packages/*"
   - "apps/*"
   - "examples/*"
+  - "docs"
 autoInstallPeers: true
 strictPeerDependencies: false
