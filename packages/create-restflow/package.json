@@ -1,36 +1,36 @@
 {
-	"name": "create-restflow",
-	"version": "1.1.1",
-	"type": "module",
-	"main": "./dist/index.js",
-	"module": "./dist/index.js",
-	"types": "./dist/index.d.ts",
-	"exports": {
-		"./package.json": "./package.json",
-		".": {
-			"development": "./src/index.ts",
-			"types": "./dist/index.d.ts",
-			"import": "./dist/index.js",
-			"default": "./dist/index.js"
-		}
-	},
-	"bin": {
-		"create-restflow": "./dist/cli.js"
-	},
-	"files": [
-		"dist",
-		"templates",
-		"!**/*.tsbuildinfo"
-	],
-	"dependencies": {
-		"@clack/prompts": "^0.11.0",
-		"ejs": "^3.1.10",
-		"fs-extra": "^11.3.1",
-		"picocolors": "^1.1.1",
-		"tslib": "^2.3.0"
-	},
-	"devDependencies": {
-		"@types/ejs": "^3.1.5",
-		"@types/fs-extra": "^11.0.4"
-	}
+  "name": "create-restflow",
+  "version": "1.2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "development": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "create-restflow": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "templates",
+    "!**/*.tsbuildinfo"
+  ],
+  "dependencies": {
+    "@clack/prompts": "^0.11.0",
+    "ejs": "^3.1.10",
+    "fs-extra": "^11.3.1",
+    "picocolors": "^1.1.1",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/ejs": "^3.1.5",
+    "@types/fs-extra": "^11.0.4"
+  }
 }

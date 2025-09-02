@@ -1,3 +1,19 @@
+## 1.2.0 (2025-09-02)
+
+### 🚀 Features
+
+- add environment variable chaining with built-in variable resolution ([8323372](https://github.com/mxvsh/restflow/commit/8323372))
+- setup docs ([617405d](https://github.com/mxvsh/restflow/commit/617405d))
+
+### 🩹 Fixes
+
+- use docs package name ([bb68468](https://github.com/mxvsh/restflow/commit/bb68468))
+- exclude docs build in npm release ([c2952d7](https://github.com/mxvsh/restflow/commit/c2952d7))
+
+### ❤️ Thank You
+
+- mxvsh @mxvsh
+
 ## 1.1.1 (2025-09-02)
 
 ### 🚀 Features
