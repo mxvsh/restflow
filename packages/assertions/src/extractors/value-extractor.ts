@@ -45,7 +45,11 @@ export class DefaultValueExtractor implements ValueExtractor {
 			};
 
 			const results = jsonpath.query(responseObject, `$.${path}`);
-			return results.length === 1 ? results[0] : results.length === 0 ? undefined : results;
+			return results.length === 1
+				? results[0]
+				: results.length === 0
+					? undefined
+					: results;
 		} catch (error) {
 			throw new ValueExtractionError(
 				`Failed to extract value from path '${path}': ${error instanceof Error ? error.message : String(error)}`,
@@ -73,7 +77,11 @@ export class DefaultValueExtractor implements ValueExtractor {
 					// Convert dot notation with arrays to proper JSONPath
 					const jsonPath = this.convertToJsonPath(bodyPath);
 					const results = jsonpath.query(parsedBody, jsonPath);
-					return results.length === 1 ? results[0] : results.length === 0 ? undefined : results;
+					return results.length === 1
+						? results[0]
+						: results.length === 0
+							? undefined
+							: results;
 				} catch {
 					// Fallback to simple property access
 					return this.getNestedProperty(parsedBody, bodyPath);

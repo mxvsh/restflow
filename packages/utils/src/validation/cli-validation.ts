@@ -50,9 +50,10 @@ export function validateEnvironmentPath(path: string): ValidationResult {
  * Validate timeout value
  */
 export function validateTimeout(timeout: string | number): ValidationResult {
-	const timeoutNum = typeof timeout === "string" ? parseInt(timeout, 10) : timeout;
-	
-	if (isNaN(timeoutNum)) {
+	const timeoutNum =
+		typeof timeout === "string" ? parseInt(timeout, 10) : timeout;
+
+	if (Number.isNaN(timeoutNum)) {
 		return { valid: false, error: "Timeout must be a number" };
 	}
 
@@ -60,8 +61,12 @@ export function validateTimeout(timeout: string | number): ValidationResult {
 		return { valid: false, error: "Timeout cannot be negative" };
 	}
 
-	if (timeoutNum > 300000) { // 5 minutes max
-		return { valid: false, error: "Timeout cannot exceed 300000ms (5 minutes)" };
+	if (timeoutNum > 300000) {
+		// 5 minutes max
+		return {
+			valid: false,
+			error: "Timeout cannot exceed 300000ms (5 minutes)",
+		};
 	}
 
 	return { valid: true };
@@ -72,11 +77,11 @@ export function validateTimeout(timeout: string | number): ValidationResult {
  */
 export function validateOutputFormat(format: string): ValidationResult {
 	const validFormats = ["pretty", "json", "summary"];
-	
+
 	if (!validFormats.includes(format)) {
-		return { 
-			valid: false, 
-			error: `Invalid format. Must be one of: ${validFormats.join(", ")}` 
+		return {
+			valid: false,
+			error: `Invalid format. Must be one of: ${validFormats.join(", ")}`,
 		};
 	}
 

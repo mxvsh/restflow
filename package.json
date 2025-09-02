@@ -4,7 +4,8 @@
 	"license": "MIT",
 	"scripts": {
 		"lint": "biome check",
-		"test": "vitest"
+		"test": "vitest",
+		"format": "biome format --write"
 	},
 	"private": true,
 	"devDependencies": {

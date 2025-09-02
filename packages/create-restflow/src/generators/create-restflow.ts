@@ -14,6 +14,10 @@ export interface CreateProjectOptions {
 	installDeps: boolean;
 }
 
+interface TemplateData {
+	name: string;
+}
+
 export async function createProject(
 	options: CreateProjectOptions,
 ): Promise<void> {
@@ -43,7 +47,7 @@ export async function createProject(
 async function copyTemplateFiles(
 	projectPath: string,
 	template: string,
-	templateData: any,
+	templateData: TemplateData,
 ): Promise<void> {
 	const templatePath = path.resolve(__dirname, "../../templates", template);
 
@@ -69,7 +73,7 @@ async function copyTemplateFiles(
 async function copyDirectory(
 	srcDir: string,
 	destDir: string,
-	templateData: any,
+	templateData: TemplateData,
 ): Promise<void> {
 	const entries = await fs.readdir(srcDir, { withFileTypes: true });
 

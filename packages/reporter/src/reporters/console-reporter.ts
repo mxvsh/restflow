@@ -1,4 +1,4 @@
-import type { FlowResult, StepResult } from "@restflow/types";
+import type { Directive, FlowResult, StepResult } from "@restflow/types";
 import figures from "figures";
 import pc from "picocolors";
 import type { ExtendedReporterOptions, Reporter } from "./base-reporter.js";
@@ -54,9 +54,7 @@ export class ConsoleReporter implements Reporter {
 			const method = this.options.colors
 				? pc.bold(request.method)
 				: request.method;
-			const url = this.options.colors
-				? pc.dim(request.url)
-				: request.url;
+			const url = this.options.colors ? pc.dim(request.url) : request.url;
 			const errorMsg = this.options.colors
 				? pc.red(error.message)
 				: error.message;
@@ -69,9 +67,7 @@ export class ConsoleReporter implements Reporter {
 				? pc.green(figures.tick)
 				: figures.tick;
 			const method = this.getMethodIcon(request.method);
-			const url = this.options.colors
-				? pc.dim(request.url)
-				: request.url;
+			const url = this.options.colors ? pc.dim(request.url) : request.url;
 			const status = this.formatStatusCode(response.status);
 			const timing = this.options.showTimings
 				? this.options.colors
@@ -202,7 +198,7 @@ export class ConsoleReporter implements Reporter {
 
 		// Create clean summary without table borders
 		const summary = this.options.colors ? pc.bold("Summary:") : "Summary:";
-		
+
 		return [
 			summary,
 			`  Status:     ${overallStatus}`,
@@ -217,7 +213,7 @@ export class ConsoleReporter implements Reporter {
 	 */
 	private showHeaders(headers: Record<string, string>): void {
 		console.log("      Headers:");
-		
+
 		Object.entries(headers).forEach(([key, value]) => {
 			const headerName = this.options.colors ? pc.green(key) : key;
 			const headerValue = this.options.colors ? pc.white(value) : value;
@@ -273,7 +269,7 @@ export class ConsoleReporter implements Reporter {
 		}
 	}
 
-	private getDirectiveDescription(directive: any): string {
+	private getDirectiveDescription(directive: Directive): string {
 		if (directive.type === "assert") {
 			return this.options.colors
 				? pc.dim(directive.expression)

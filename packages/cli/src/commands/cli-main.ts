@@ -60,7 +60,7 @@ export async function cli(): Promise<void> {
 			// Validate flow path
 			const pathValidation = validateFlowPathArgument(path);
 			if (!pathValidation.valid) {
-				console.error(formatError(pathValidation.error!));
+				console.error(formatError(pathValidation.error || "Invalid path"));
 				process.exit(EXIT_CODES.VALIDATION_ERROR);
 			}
 

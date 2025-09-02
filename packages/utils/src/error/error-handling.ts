@@ -10,7 +10,7 @@ export const EXIT_CODES = {
 	FILE_ERROR: 5,
 } as const;
 
-export type ExitCode = typeof EXIT_CODES[keyof typeof EXIT_CODES];
+export type ExitCode = (typeof EXIT_CODES)[keyof typeof EXIT_CODES];
 
 /**
  * Format error message for CLI output
@@ -31,7 +31,10 @@ export function createError(message: string, context?: string): Error {
 /**
  * Handle CLI exit with proper error code
  */
-export function exitWithError(error: Error | string, exitCode: ExitCode = EXIT_CODES.GENERAL_ERROR): never {
+export function exitWithError(
+	error: Error | string,
+	exitCode: ExitCode = EXIT_CODES.GENERAL_ERROR,
+): never {
 	const message = error instanceof Error ? error.message : error;
 	console.error(message);
 	process.exit(exitCode);

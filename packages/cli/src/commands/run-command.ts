@@ -159,13 +159,14 @@ export async function executeRunCommand(
 			);
 
 			console.log(
-				"\n" + formatter.createOverallSummaryTable(
-					totalSteps,
-					passedSteps,
-					totalDirectives,
-					passedDirectives,
-					totalDuration,
-				),
+				"\n" +
+					formatter.createOverallSummaryTable(
+						totalSteps,
+						passedSteps,
+						totalDirectives,
+						passedDirectives,
+						totalDuration,
+					),
 			);
 		}
 

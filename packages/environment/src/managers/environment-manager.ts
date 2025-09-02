@@ -1,5 +1,9 @@
 import type { Environment } from "@restflow/types";
-import { DotenvLoader, EnvLoadError, type EnvLoader } from "../loaders/env-loader.js";
+import {
+	DotenvLoader,
+	EnvLoadError,
+	type EnvLoader,
+} from "../loaders/env-loader.js";
 import { DefaultEnvMerger, type EnvMerger } from "../mergers/env-merger.js";
 import {
 	EnvValidator,

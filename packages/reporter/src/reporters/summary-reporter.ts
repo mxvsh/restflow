@@ -1,5 +1,5 @@
 import type { FlowResult, StepResult } from "@restflow/types";
-import type { Reporter, ExtendedReporterOptions } from "./base-reporter.js";
+import type { ExtendedReporterOptions, Reporter } from "./base-reporter.js";
 
 /**
  * Summary reporter for concise test results
@@ -41,9 +41,15 @@ export class SummaryReporter implements Reporter {
 
 	onFlowComplete(result: FlowResult): void {
 		const duration = Date.now() - this.startTime;
-		const passedSteps = result.steps.filter(s => !s.error).length;
-		const totalDirectives = result.steps.reduce((sum, s) => sum + s.directives.length, 0);
-		const passedDirectives = result.steps.reduce((sum, s) => sum + s.directives.filter(d => d.success).length, 0);
+		const passedSteps = result.steps.filter((s) => !s.error).length;
+		const totalDirectives = result.steps.reduce(
+			(sum, s) => sum + s.directives.length,
+			0,
+		);
+		const passedDirectives = result.steps.reduce(
+			(sum, s) => sum + s.directives.filter((d) => d.success).length,
+			0,
+		);
 
 		// Concise summary output
 		const status = result.success ? "PASS" : "FAIL";
@@ -51,26 +57,30 @@ export class SummaryReporter implements Reporter {
 		const directivesSummary = `${passedDirectives}/${totalDirectives} assertions`;
 		const timingSummary = `${duration}ms`;
 
-		console.log(`${status} | ${stepsSummary} | ${directivesSummary} | ${timingSummary}`);
+		console.log(
+			`${status} | ${stepsSummary} | ${directivesSummary} | ${timingSummary}`,
+		);
 
 		// Show failed steps if any
 		if (!result.success) {
-			const failedSteps = result.steps.filter(s => s.error);
+			const failedSteps = result.steps.filter((s) => s.error);
 			if (failedSteps.length > 0) {
 				console.log("\nFailed steps:");
-				failedSteps.forEach(step => {
+				failedSteps.forEach((step) => {
 					console.log(`  - ${step.step.name}: ${step.error?.message}`);
 				});
 			}
 
 			// Show failed assertions
-			const failedDirectives = result.steps.flatMap(s => 
-				s.directives.filter(d => !d.success).map(d => ({
-					stepName: s.step.name,
-					directive: d
-				}))
+			const failedDirectives = result.steps.flatMap((s) =>
+				s.directives
+					.filter((d) => !d.success)
+					.map((d) => ({
+						stepName: s.step.name,
+						directive: d,
+					})),
 			);
-			
+
 			if (failedDirectives.length > 0) {
 				console.log("\nFailed assertions:");
 				failedDirectives.forEach(({ stepName, directive }) => {

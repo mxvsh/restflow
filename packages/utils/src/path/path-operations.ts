@@ -1,4 +1,4 @@
-import { resolve, relative, dirname, join } from "path";
+import { dirname, join, relative, resolve } from "node:path";
 
 /**
  * Resolve a path relative to the current working directory
@@ -33,13 +33,15 @@ export function joinPaths(...paths: string[]): string {
  */
 export function normalizePathForDisplay(path: string, maxLength = 60): string {
 	const relativePath = getRelativePath(path);
-	
+
 	if (relativePath.length <= maxLength) {
 		return relativePath;
 	}
-	
+
 	// Truncate in the middle with ellipsis
 	const start = relativePath.substring(0, Math.floor(maxLength / 2) - 2);
-	const end = relativePath.substring(relativePath.length - Math.floor(maxLength / 2) + 2);
+	const end = relativePath.substring(
+		relativePath.length - Math.floor(maxLength / 2) + 2,
+	);
 	return `${start}...${end}`;
 }

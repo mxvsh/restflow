@@ -10,7 +10,10 @@ export interface VariableResolver {
 export class DefaultVariableResolver implements VariableResolver {
 	private static readonly VARIABLE_PATTERN = /\{\{(\w+)\}\}/g;
 	public static readonly BUILTIN_VARIABLES = new Set([
-		'uuid', 'timestamp', 'randomString', 'randomNumber'
+		"uuid",
+		"timestamp",
+		"randomString",
+		"randomNumber",
 	]);
 
 	resolve(template: string, context: ExecutionContext): string {
@@ -22,12 +25,12 @@ export class DefaultVariableResolver implements VariableResolver {
 				if (value !== undefined) {
 					return String(value);
 				}
-				
+
 				// If not found and it's a built-in variable, generate it
 				if (DefaultVariableResolver.BUILTIN_VARIABLES.has(variableName)) {
 					return this.generateBuiltinVariable(variableName);
 				}
-				
+
 				// Otherwise throw error
 				throw new VariableError(`Variable '${variableName}' is not defined`);
 			},
@@ -36,13 +39,13 @@ export class DefaultVariableResolver implements VariableResolver {
 
 	private generateBuiltinVariable(variableName: string): string {
 		switch (variableName) {
-			case 'uuid':
+			case "uuid":
 				return randomUUID();
-			case 'timestamp':
+			case "timestamp":
 				return String(Math.floor(Date.now() / 1000));
-			case 'randomString':
+			case "randomString":
 				return Math.random().toString(36).substring(2, 15);
-			case 'randomNumber':
+			case "randomNumber":
 				return String(Math.floor(Math.random() * 1000000));
 			default:
 				throw new VariableError(`Unknown built-in variable '${variableName}'`);
@@ -115,7 +118,7 @@ export function validateVariables(
 		if (DefaultVariableResolver.BUILTIN_VARIABLES.has(variable)) {
 			continue;
 		}
-		
+
 		if (!(variable in context.variables)) {
 			missingVariables.push(variable);
 		}

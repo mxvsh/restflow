@@ -1,5 +1,5 @@
+import { extname, join } from "node:path";
 import fs from "fs-extra";
-import { extname, join } from "path";
 
 /**
  * Check if a file exists and is readable
@@ -28,7 +28,9 @@ export async function directoryExists(dirPath: string): Promise<boolean> {
 /**
  * Read file content safely with error handling
  */
-export async function readFileContent(filePath: string): Promise<{ content: string; error?: string }> {
+export async function readFileContent(
+	filePath: string,
+): Promise<{ content: string; error?: string }> {
 	try {
 		if (!(await fileExists(filePath))) {
 			return { content: "", error: `File not found: ${filePath}` };
@@ -36,9 +38,9 @@ export async function readFileContent(filePath: string): Promise<{ content: stri
 		const content = await fs.readFile(filePath, "utf-8");
 		return { content };
 	} catch (error) {
-		return { 
-			content: "", 
-			error: `Failed to read file: ${error instanceof Error ? error.message : String(error)}` 
+		return {
+			content: "",
+			error: `Failed to read file: ${error instanceof Error ? error.message : String(error)}`,
 		};
 	}
 }
@@ -46,27 +48,30 @@ export async function readFileContent(filePath: string): Promise<{ content: stri
 /**
  * Find all files with specific extension in a directory recursively
  */
-export async function findFilesWithExtension(dirPath: string, extension: string): Promise<string[]> {
+export async function findFilesWithExtension(
+	dirPath: string,
+	extension: string,
+): Promise<string[]> {
 	try {
 		if (!(await directoryExists(dirPath))) {
 			return [];
 		}
-		
+
 		const files: string[] = [];
 		const entries = await fs.readdir(dirPath);
-		
+
 		for (const entry of entries) {
 			const fullPath = join(dirPath, entry);
 			const stat = await fs.stat(fullPath);
-			
+
 			if (stat.isFile() && extname(entry) === extension) {
 				files.push(fullPath);
 			} else if (stat.isDirectory()) {
 				// Recursively search subdirectories
-				files.push(...await findFilesWithExtension(fullPath, extension));
+				files.push(...(await findFilesWithExtension(fullPath, extension)));
 			}
 		}
-		
+
 		return files;
 	} catch {
 		return [];
@@ -101,9 +106,9 @@ export const sync = {
 			const content = fs.readFileSync(filePath, "utf-8");
 			return { content };
 		} catch (error) {
-			return { 
-				content: "", 
-				error: `Failed to read file: ${error instanceof Error ? error.message : String(error)}` 
+			return {
+				content: "",
+				error: `Failed to read file: ${error instanceof Error ? error.message : String(error)}`,
 			};
 		}
 	},
@@ -113,14 +118,14 @@ export const sync = {
 			if (!this.directoryExists(dirPath)) {
 				return [];
 			}
-			
+
 			const files: string[] = [];
 			const entries = fs.readdirSync(dirPath);
-			
+
 			for (const entry of entries) {
 				const fullPath = join(dirPath, entry);
 				const stat = fs.statSync(fullPath);
-				
+
 				if (stat.isFile() && extname(entry) === extension) {
 					files.push(fullPath);
 				} else if (stat.isDirectory()) {
@@ -128,10 +133,10 @@ export const sync = {
 					files.push(...this.findFilesWithExtension(fullPath, extension));
 				}
 			}
-			
+
 			return files;
 		} catch {
 			return [];
 		}
-	}
+	},
 };

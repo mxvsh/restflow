@@ -12,8 +12,8 @@
 	"include": ["src/**/*.ts"],
 	"exclude": ["src/**/*.test.ts", "src/**/*.spec.ts"],
 	"references": [
-    {
-      "path": "../types/tsconfig.lib.json"
-    }
-  ]
+		{
+			"path": "../types/tsconfig.lib.json"
+		}
+	]
 }

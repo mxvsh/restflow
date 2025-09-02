@@ -1,4 +1,9 @@
-import { validateEnvironmentPath, validateFlowPath, validateOutputFormat, validateTimeout } from "@restflow/utils";
+import {
+	validateEnvironmentPath,
+	validateFlowPath,
+	validateOutputFormat,
+	validateTimeout,
+} from "@restflow/utils";
 
 export interface ParsedRunOptions {
 	environmentFile?: string;
@@ -24,9 +29,12 @@ export interface RunCommandOptions {
 /**
  * Parse and validate CLI options for run command
  */
-export function parseRunOptions(rawOptions: RunCommandOptions): { options: ParsedRunOptions; errors: string[] } {
+export function parseRunOptions(rawOptions: RunCommandOptions): {
+	options: ParsedRunOptions;
+	errors: string[];
+} {
 	const errors: string[] = [];
-	
+
 	// Determine output format
 	let format: "pretty" | "json" | "summary" = "pretty";
 	if (rawOptions.json) {
@@ -36,7 +44,7 @@ export function parseRunOptions(rawOptions: RunCommandOptions): { options: Parse
 		if (formatValidation.valid) {
 			format = rawOptions.format as "pretty" | "json" | "summary";
 		} else {
-			errors.push(formatValidation.error!);
+			errors.push(formatValidation.error || "Invalid format");
 		}
 	}
 
@@ -47,7 +55,7 @@ export function parseRunOptions(rawOptions: RunCommandOptions): { options: Parse
 		if (envValidation.valid) {
 			environmentFile = rawOptions.env;
 		} else {
-			errors.push(envValidation.error!);
+			errors.push(envValidation.error || "Invalid environment path");
 		}
 	}
 
@@ -58,7 +66,7 @@ export function parseRunOptions(rawOptions: RunCommandOptions): { options: Parse
 		if (timeoutValidation.valid) {
 			timeout = parseInt(rawOptions.timeout, 10);
 		} else {
-			errors.push(timeoutValidation.error!);
+			errors.push(timeoutValidation.error || "Invalid timeout");
 		}
 	}
 
@@ -78,7 +86,10 @@ export function parseRunOptions(rawOptions: RunCommandOptions): { options: Parse
 /**
  * Validate flow path argument
  */
-export function validateFlowPathArgument(path: string): { valid: boolean; error?: string } {
+export function validateFlowPathArgument(path: string): {
+	valid: boolean;
+	error?: string;
+} {
 	if (!path) {
 		return { valid: false, error: "Flow path is required" };
 	}

@@ -3,29 +3,29 @@
 	"files": [],
 	"include": [],
 	"references": [
-    {
-      "path": "../utils"
-    },
-    {
-      "path": "../environment"
-    },
-    {
-      "path": "../reporter"
-    },
-    {
-      "path": "../engine"
-    },
-    {
-      "path": "../http"
-    },
-    {
-      "path": "../parser"
-    },
-    {
-      "path": "../types"
-    },
-    {
-      "path": "./tsconfig.lib.json"
-    }
-  ]
+		{
+			"path": "../utils"
+		},
+		{
+			"path": "../environment"
+		},
+		{
+			"path": "../reporter"
+		},
+		{
+			"path": "../engine"
+		},
+		{
+			"path": "../http"
+		},
+		{
+			"path": "../parser"
+		},
+		{
+			"path": "../types"
+		},
+		{
+			"path": "./tsconfig.lib.json"
+		}
+	]
 }

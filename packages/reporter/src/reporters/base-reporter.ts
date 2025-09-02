@@ -1,4 +1,4 @@
-import type { FlowResult, StepResult, ReporterOptions } from "@restflow/types";
+import type { FlowResult, ReporterOptions, StepResult } from "@restflow/types";
 
 /**
  * Base reporter interface for flow execution reporting

@@ -30,7 +30,11 @@ export async function executeInitCommand(): Promise<void> {
 
 	if (shouldContinue) {
 		// TODO: Implement project scaffolding when create-restflow package is ready
-		outro(pc.green("✨ Project will be created! (Implementation pending - use create-restflow package)"));
+		outro(
+			pc.green(
+				"✨ Project will be created! (Implementation pending - use create-restflow package)",
+			),
+		);
 	} else {
 		outro(pc.gray("Operation cancelled."));
 	}

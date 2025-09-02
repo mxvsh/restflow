@@ -3,14 +3,14 @@
 	"files": [],
 	"include": [],
 	"references": [
-    {
-      "path": "../types"
-    },
-    {
-      "path": "./tsconfig.lib.json"
-    },
-    {
-      "path": "./tsconfig.spec.json"
-    }
-  ]
+		{
+			"path": "../types"
+		},
+		{
+			"path": "./tsconfig.lib.json"
+		},
+		{
+			"path": "./tsconfig.spec.json"
+		}
+	]
 }

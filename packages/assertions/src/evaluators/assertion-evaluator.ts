@@ -1,13 +1,13 @@
-import type { HttpResponse, ExecutionContext } from "@restflow/types";
-import {
-	type ComparisonOperator,
-	ExpressionParser,
-} from "../parsers/expression-parser.js";
+import type { ExecutionContext, HttpResponse } from "@restflow/types";
+import { DefaultVariableResolver } from "@restflow/variables";
 import {
 	DefaultValueExtractor,
 	type ValueExtractor,
 } from "../extractors/value-extractor.js";
-import { DefaultVariableResolver } from "@restflow/variables";
+import {
+	type ComparisonOperator,
+	ExpressionParser,
+} from "../parsers/expression-parser.js";
 
 export interface AssertionResult {
 	expression: string;
@@ -19,7 +19,11 @@ export interface AssertionResult {
 }
 
 export interface AssertionEvaluator {
-	evaluate(expression: string, response: HttpResponse, context?: ExecutionContext): AssertionResult;
+	evaluate(
+		expression: string,
+		response: HttpResponse,
+		context?: ExecutionContext,
+	): AssertionResult;
 }
 
 export class DefaultAssertionEvaluator implements AssertionEvaluator {
@@ -33,13 +37,17 @@ export class DefaultAssertionEvaluator implements AssertionEvaluator {
 		this.variableResolver = new DefaultVariableResolver();
 	}
 
-	evaluate(expression: string, response: HttpResponse, context?: ExecutionContext): AssertionResult {
+	evaluate(
+		expression: string,
+		response: HttpResponse,
+		context?: ExecutionContext,
+	): AssertionResult {
 		try {
 			// Resolve variables in the expression if context is provided
-			const resolvedExpression = context 
+			const resolvedExpression = context
 				? this.variableResolver.resolve(expression, context)
 				: expression;
-			
+
 			const parsed = this.parser.parse(resolvedExpression);
 			const actual = this.extractor.extract(parsed.left, response);
 			const passed = this.evaluateComparison(

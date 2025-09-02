@@ -1,4 +1,9 @@
-import { createConsoleReporter, createJSONReporter, createSummaryReporter, type Reporter } from "@restflow/reporter";
+import {
+	createConsoleReporter,
+	createJSONReporter,
+	createSummaryReporter,
+	type Reporter,
+} from "@restflow/reporter";
 
 export interface CLIReporterOptions {
 	format?: "pretty" | "json" | "summary";
@@ -37,8 +42,6 @@ export function createCLIReporter(options: CLIReporterOptions = {}): Reporter {
 				colors,
 				showTimings,
 			});
-
-		case "pretty":
 		default:
 			return createConsoleReporter({
 				colors,

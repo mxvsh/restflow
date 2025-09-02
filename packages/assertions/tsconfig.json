@@ -3,17 +3,17 @@
 	"files": [],
 	"include": [],
 	"references": [
-    {
-      "path": "../variables"
-    },
-    {
-      "path": "../types"
-    },
-    {
-      "path": "./tsconfig.lib.json"
-    },
-    {
-      "path": "./tsconfig.spec.json"
-    }
-  ]
+		{
+			"path": "../variables"
+		},
+		{
+			"path": "../types"
+		},
+		{
+			"path": "./tsconfig.lib.json"
+		},
+		{
+			"path": "./tsconfig.spec.json"
+		}
+	]
 }

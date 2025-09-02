@@ -1,7 +1,12 @@
+import type {
+	Directive,
+	DirectiveResult,
+	FlowResult,
+	StepResult,
+} from "@restflow/types";
 import figures from "figures";
 import pc from "picocolors";
 import stripAnsi from "strip-ansi";
-import type { FlowResult, StepResult, Directive, DirectiveResult } from "@restflow/types";
 
 /**
  * CLI formatter with beautiful icons, colors, and tables
