@@ -44,11 +44,13 @@ METHOD /endpoint
 - **Supported Methods**: GET, POST, PUT, DELETE, PATCH, HEAD, OPTIONS
 - **Endpoint Format**: Must start with `/` or be a full URL
 - **Variables**: Support `{{variable}}` substitution
+- **BASE_URL Support**: Relative URLs are automatically prefixed with `BASE_URL` from environment
 - **Examples**:
-  - `GET /health`
-  - `POST /auth/login`
-  - `PUT /users/{{userId}}`
-  - `GET {{baseUrl}}/api/data`
+  - `GET /health` (uses BASE_URL if set)
+  - `POST /auth/login` (uses BASE_URL if set)
+  - `PUT /users/{{userId}}` (uses BASE_URL if set)
+  - `GET https://api.example.com/data` (absolute URL, ignores BASE_URL)
+  - `GET {{baseUrl}}/api/data` (variable resolution)
 
 ### 3. Headers (Optional)
 
@@ -161,6 +163,7 @@ Variables can be defined in several ways:
 1. **Environment Variables**: Loaded from `.env` files
 2. **Captured Variables**: Extracted from previous responses
 3. **Built-in Variables**: System-provided variables
+4. **CLI Variables**: Passed via command line arguments
 
 ### Variable Usage
 
@@ -185,10 +188,83 @@ Authorization: Bearer {{token}}
 
 ### Built-in Variables
 
-- `{{timestamp}}`: Current Unix timestamp
-- `{{uuid}}`: Generated UUID v4
-- `{{randomString}}`: Random alphanumeric string
-- `{{randomNumber}}`: Random number
+Built-in variables generate dynamic values and are always available:
+
+- `{{uuid}}`: Generated UUID v4 (e.g., `550e8400-e29b-41d4-a716-446655440000`)
+- `{{timestamp}}`: Current Unix timestamp (e.g., `1609459200`)
+- `{{randomString}}`: Random alphanumeric string (e.g., `abc123def`)
+- `{{randomNumber}}`: Random number 0-999999 (e.g., `42317`)
+
+**Important**: Each use of a built-in variable generates a unique value. If you need consistency, capture the value first:
+
+```flow
+### Step 1
+GET /api/data
+X-Request-ID: {{uuid}}
+
+> capture requestId = headers["x-request-id"]
+
+### Step 2 - Use captured value for consistency
+POST /api/logs
+X-Related-Request: {{requestId}}
+```
+
+### Environment Variables and Chaining
+
+Environment variables support variable references and built-in variables:
+
+**.env file**:
+```env
+# Basic variables
+BASE_URL=https://api.example.com
+API_KEY=secret123
+
+# Built-in variables in environment
+USER_ID=user-{{randomString}}
+SESSION_ID=session-{{uuid}}
+
+# Variable chaining
+EMAIL={{USER_ID}}@example.com
+LOG_PATH=/logs/{{SESSION_ID}}.log
+
+# Dynamic BASE_URL
+BASE_URL=https://{{environment}}.api.com
+environment=staging
+```
+
+**Variable Resolution Priority** (highest to lowest):
+1. CLI variables (passed via command line)
+2. Captured variables (from previous responses)
+3. Environment variables (from .env files)
+4. Built-in variables (generated dynamically)
+
+### BASE_URL Support
+
+When `BASE_URL` is defined in your environment file, relative URLs in flows are automatically prefixed:
+
+**.env**:
+```env
+BASE_URL=https://api.example.com
+```
+
+**Flow**:
+```flow
+### Uses BASE_URL - becomes https://api.example.com/users
+GET /users
+
+### Absolute URL - ignores BASE_URL
+GET https://other-api.com/data
+
+### Variable in BASE_URL works too
+GET /posts/{{postId}}
+```
+
+**Dynamic BASE_URL**:
+```env
+BASE_URL=https://{{env}}.example.com
+env=staging
+# Results in: https://staging.example.com
+```
 
 ## Comments
 
@@ -205,18 +281,74 @@ GET /endpoint
 - Can appear anywhere in the file
 - Must start with `#` at the beginning of a line
 
-## Complete Example
+## Complete Examples
 
+### Basic Example with Built-in Variables
+
+**.env**:
+```env
+BASE_URL=https://jsonplaceholder.typicode.com
+API_KEY=secret123
+```
+
+**Flow**:
+```flow
+# API Testing with Built-in Variables
+
+### Create Post with Dynamic Data
+POST /posts
+Content-Type: application/json
+X-Request-ID: {{uuid}}
+X-Timestamp: {{timestamp}}
+
+{
+  "title": "Test Post {{randomString}}",
+  "body": "Generated at {{timestamp}}",
+  "userId": {{randomNumber}}
+}
+
+> assert status == 201
+> assert body.id != null
+> capture postId = body.id
+
+### Get Created Post
+GET /posts/{{postId}}
+X-Request-ID: {{uuid}}
+
+> assert status == 200
+> assert body.title contains "Test Post"
+```
+
+### Advanced Example with Variable Chaining
+
+**.env**:
+```env
+# Environment setup
+BASE_URL=https://{{environment}}.api.example.com
+environment=staging
+
+# User setup with chaining
+USER_PREFIX=user-{{randomString}}
+USER_EMAIL={{USER_PREFIX}}@example.com
+SESSION_ID=session-{{uuid}}
+
+# API configuration
+API_VERSION=v1
+ENDPOINT_BASE={{BASE_URL}}/{{API_VERSION}}
+```
+
+**Flow**:
 ```flow
 # User Registration and Login Flow
 
 ### Register New User
 POST /auth/register
 Content-Type: application/json
+X-Session-ID: {{SESSION_ID}}
 
 {
-  "username": "testuser",
-  "email": "test@example.com",
+  "username": "{{USER_PREFIX}}",
+  "email": "{{USER_EMAIL}}",
   "password": "password123"
 }
 
@@ -227,9 +359,10 @@ Content-Type: application/json
 ### Login User
 POST /auth/login
 Content-Type: application/json
+X-Session-ID: {{SESSION_ID}}
 
 {
-  "email": "test@example.com",
+  "email": "{{USER_EMAIL}}",
   "password": "password123"
 }
 
@@ -240,22 +373,24 @@ Content-Type: application/json
 ### Get User Profile
 GET /users/{{userId}}
 Authorization: Bearer {{token}}
+X-Session-ID: {{SESSION_ID}}
 
 > assert status == 200
 > assert body.id == "{{userId}}"
-> assert body.email == "test@example.com"
+> assert body.email == "{{USER_EMAIL}}"
 
 ### Update User Profile
 PUT /users/{{userId}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
+X-Session-ID: {{SESSION_ID}}
 
 {
-  "name": "Updated Name"
+  "name": "Updated Name {{timestamp}}"
 }
 
 > assert status == 200
-> assert body.name == "Updated Name"
+> assert body.name contains "Updated Name"
 ```
 
 ## Best Practices for LLMs
@@ -268,7 +403,8 @@ Content-Type: application/json
 ### 2. Variable Naming
 - Use camelCase: `userId`, `accessToken`
 - Be descriptive: `userEmail` vs `email`
-- Avoid conflicts with built-in variables
+- Avoid conflicts with built-in variables (`uuid`, `timestamp`, `randomString`, `randomNumber`)
+- Use meaningful prefixes for environment chaining: `USER_ID`, `SESSION_TOKEN`
 
 ### 3. Assertion Strategy
 - Always assert status codes
@@ -281,11 +417,25 @@ Content-Type: application/json
 - Capture variables before they're needed
 - Group related operations
 - Use meaningful step names
+- Leverage BASE_URL for environment portability
+- Use environment variable chaining for complex setups
 
 ### 5. Error Handling
 - Assert expected error codes
 - Validate error message format
 - Test edge cases and boundaries
+
+### 6. Environment Setup
+- Use BASE_URL for API endpoint configuration
+- Chain variables for complex dynamic values
+- Separate environment-specific values into different .env files
+- Use built-in variables for unique test data generation
+
+### 7. Built-in Variable Usage
+- Capture built-in variables if you need consistency across steps
+- Use `{{uuid}}` for unique identifiers
+- Use `{{timestamp}}` for time-based testing
+- Use `{{randomString}}` and `{{randomNumber}}` for dynamic test data
 
 ## Common Patterns
 
