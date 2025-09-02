@@ -1,4 +1,5 @@
-import type { Environment } from "@restflow/types";
+import type { Environment, ExecutionContext } from "@restflow/types";
+import { DefaultVariableResolver } from "@restflow/variables";
 import {
 	DotenvLoader,
 	EnvLoadError,
@@ -53,9 +54,12 @@ export class EnvironmentManager {
 
 		const mergedVariables = this.merger.merge(processVariables, fileVariables);
 
+		// Resolve built-in variables and variable references in environment values
+		const resolvedVariables = this.resolveEnvironmentVariables(mergedVariables);
+
 		return {
 			name: filePath ? this.extractEnvironmentName(filePath) : "default",
-			variables: mergedVariables,
+			variables: resolvedVariables,
 		};
 	}
 
@@ -91,6 +95,49 @@ export class EnvironmentManager {
 	private extractEnvironmentName(filePath: string): string {
 		const fileName = filePath.split("/").pop() || filePath;
 		return fileName.replace(/\.(env|environment)$/, "");
+	}
+
+	private resolveEnvironmentVariables(
+		variables: Record<string, string>,
+	): Record<string, string> {
+		const resolver = new DefaultVariableResolver();
+		const maxIterations = 10; // Prevent infinite loops
+
+		// Keep resolving until no more changes or max iterations reached
+		let currentVariables = { ...variables };
+		let hasChanges = true;
+		let iteration = 0;
+
+		while (hasChanges && iteration < maxIterations) {
+			hasChanges = false;
+			const newResolved: Record<string, string> = {};
+
+			for (const [key, value] of Object.entries(currentVariables)) {
+				try {
+					// Create a context with current variables for resolution
+					const context: ExecutionContext = {
+						variables: currentVariables,
+						responses: [],
+					};
+
+					const resolvedValue = resolver.resolve(value, context);
+					newResolved[key] = resolvedValue;
+
+					// Check if this value changed
+					if (resolvedValue !== value) {
+						hasChanges = true;
+					}
+				} catch (_error) {
+					// If resolution fails, keep the original value
+					newResolved[key] = value;
+				}
+			}
+
+			currentVariables = newResolved;
+			iteration++;
+		}
+
+		return currentVariables;
 	}
 }
 

@@ -267,6 +267,9 @@ importers:
       '@restflow/types':
         specifier: workspace:*
         version: link:../types
+      '@restflow/variables':
+        specifier: workspace:*
+        version: link:../variables
       dotenv:
         specifier: ^17.2.1
         version: 17.2.1

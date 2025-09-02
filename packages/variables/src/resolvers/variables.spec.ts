@@ -99,7 +99,9 @@ describe("DefaultVariableResolver", () => {
 			url: "/api/users/{{userId}}",
 		};
 		const resolvedRequest = resolver.resolveRequest(request, context);
-		expect(resolvedRequest.url).toBe("https://staging.example.com/api/users/123");
+		expect(resolvedRequest.url).toBe(
+			"https://staging.example.com/api/users/123",
+		);
 	});
 
 	it("should use relative path as-is when no BASE_URL is set", () => {

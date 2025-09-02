@@ -55,23 +55,23 @@ export class DefaultVariableResolver implements VariableResolver {
 	private resolveUrl(urlTemplate: string, context: ExecutionContext): string {
 		// First resolve any variables in the URL
 		const resolvedUrl = this.resolve(urlTemplate, context);
-		
+
 		// Check if the resolved URL is a relative path (doesn't start with http/https)
 		const isAbsoluteUrl = /^https?:\/\//i.test(resolvedUrl);
-		
+
 		if (!isAbsoluteUrl) {
 			// Check if BASE_URL is defined in context
 			const baseUrl = context.variables.BASE_URL;
-			if (baseUrl && typeof baseUrl === 'string') {
+			if (baseUrl && typeof baseUrl === "string") {
 				// Resolve variables in the BASE_URL itself
 				const resolvedBaseUrl = this.resolve(baseUrl, context);
 				// Remove trailing slash from base URL and leading slash from path
-				const cleanBaseUrl = resolvedBaseUrl.replace(/\/$/, '');
-				const cleanPath = resolvedUrl.replace(/^\//, '');
+				const cleanBaseUrl = resolvedBaseUrl.replace(/\/$/, "");
+				const cleanPath = resolvedUrl.replace(/^\//, "");
 				return `${cleanBaseUrl}/${cleanPath}`;
 			}
 		}
-		
+
 		return resolvedUrl;
 	}
 
