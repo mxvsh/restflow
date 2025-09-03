@@ -56,6 +56,59 @@ describe("DefaultValueExtractor", () => {
 		const value = extractor.extract("body.data.id", response);
 		expect(value).toBe(123);
 	});
+
+	it("should extract a cookie from Set-Cookie header", () => {
+		const responseWithCookies: HttpResponse = {
+			status: 200,
+			statusText: "OK",
+			headers: {
+				"content-type": "application/json",
+				"set-cookie": "sessionId=abc123; Path=/; HttpOnly"
+			},
+			body: JSON.stringify({ message: "success" }),
+			responseTime: 100,
+		};
+
+		const value = extractor.extract("cookies.sessionId", responseWithCookies);
+		expect(value).toBe("abc123");
+	});
+
+	it("should extract a cookie with special characters", () => {
+		const responseWithCookies: HttpResponse = {
+			status: 200,
+			statusText: "OK",
+			headers: {
+				"content-type": "application/json",
+				"set-cookie": "token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9; Path=/api; Secure"
+			},
+			body: JSON.stringify({ message: "success" }),
+			responseTime: 100,
+		};
+
+		const value = extractor.extract("cookies.token", responseWithCookies);
+		expect(value).toBe("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9");
+	});
+
+	it("should return undefined for non-existent cookie", () => {
+		const responseWithCookies: HttpResponse = {
+			status: 200,
+			statusText: "OK",
+			headers: {
+				"content-type": "application/json",
+				"set-cookie": "sessionId=abc123; Path=/"
+			},
+			body: JSON.stringify({ message: "success" }),
+			responseTime: 100,
+		};
+
+		const value = extractor.extract("cookies.nonExistent", responseWithCookies);
+		expect(value).toBeUndefined();
+	});
+
+	it("should return undefined when no Set-Cookie header exists", () => {
+		const value = extractor.extract("cookies.sessionId", response);
+		expect(value).toBeUndefined();
+	});
 });
 
 describe("DefaultAssertionEvaluator", () => {

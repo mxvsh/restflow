@@ -31,11 +31,23 @@ These variables are created using the `capture` directive. They allow you to ext
 POST /login
 ...
 > capture auth_token = body.token
+> capture session_id = cookies.sessionId
 
-### Use the captured token
+### Use the captured token and session
 GET /profile
 Authorization: Bearer {{auth_token}}
+Cookie: sessionId={{session_id}}
 ```
+
+#### What Can Be Captured
+
+You can capture values from different parts of the HTTP response:
+
+- **Response Body**: Use JSONPath syntax like `body.user.id` or `body.data[0].name`
+- **Response Headers**: Use `headers.header-name` syntax like `headers.x-request-id`
+- **Cookies**: Use `cookies.cookie-name` syntax like `cookies.sessionId`
+- **Status**: Use `status` to capture the HTTP status code
+- **Response Time**: Use `responseTime` to capture request duration
 
 ### 3. Environment Variables
 

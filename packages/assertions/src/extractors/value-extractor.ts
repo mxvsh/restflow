@@ -29,6 +29,12 @@ export class DefaultValueExtractor implements ValueExtractor {
 			);
 		}
 
+		// Handle cookies
+		if (path.startsWith("cookies.")) {
+			const cookieName = path.substring("cookies.".length);
+			return this.extractCookie(cookieName, response.headers);
+		}
+
 		// Handle body paths
 		if (path.startsWith("body")) {
 			return this.extractFromBody(path, response.body);
@@ -122,6 +128,48 @@ export class DefaultValueExtractor implements ValueExtractor {
 		return path.split(".").reduce((current: unknown, key: string) => {
 			return (current as Record<string, unknown>)?.[key];
 		}, obj);
+	}
+
+	private extractCookie(cookieName: string, headers: Record<string, string>): string | undefined {
+		// Look for Set-Cookie header (case-insensitive)
+		const setCookieHeader = headers["set-cookie"] || headers["Set-Cookie"];
+		
+		if (!setCookieHeader) {
+			return undefined;
+		}
+
+		// Handle multiple Set-Cookie headers
+		const cookieHeaders = Array.isArray(setCookieHeader) 
+			? setCookieHeader 
+			: [setCookieHeader];
+
+		// Parse each Set-Cookie header to find the requested cookie
+		for (const cookieHeader of cookieHeaders) {
+			const cookies = this.parseCookieHeader(cookieHeader);
+			if (cookies[cookieName] !== undefined) {
+				return cookies[cookieName];
+			}
+		}
+
+		return undefined;
+	}
+
+	private parseCookieHeader(cookieHeader: string): Record<string, string> {
+		const cookies: Record<string, string> = {};
+		
+		// Split by semicolon to get individual cookie directives
+		const parts = cookieHeader.split(';');
+		
+		// The first part contains the cookie name=value
+		const firstPart = parts[0]?.trim();
+		if (firstPart) {
+			const [name, value] = firstPart.split('=', 2);
+			if (name && value !== undefined) {
+				cookies[name.trim()] = value.trim();
+			}
+		}
+
+		return cookies;
 	}
 }
 

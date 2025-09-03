@@ -1,5 +1,5 @@
 // Flow directive types
-export type DirectiveType = "capture" | "assert";
+export type DirectiveType = "capture" | "assert" | "console";
 
 export interface CaptureDirective {
 	type: "capture";
@@ -12,7 +12,12 @@ export interface AssertDirective {
 	expression: string; // e.g., "status == 200" or "body.name == 'test'"
 }
 
-export type Directive = CaptureDirective | AssertDirective;
+export interface ConsoleDirective {
+	type: "console";
+	expression: string; // e.g., "body", "cookies.sessionId", "headers.content-type"
+}
+
+export type Directive = CaptureDirective | AssertDirective | ConsoleDirective;
 
 export interface DirectiveResult {
 	directive: Directive;

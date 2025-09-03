@@ -42,6 +42,22 @@ You can access response headers using the `headers` keyword. Header names are ca
 > assert headers["x-request-id"] != null
 ```
 
+### Cookie Assertions
+
+You can access cookies from the `Set-Cookie` response header using the `cookies` keyword. This allows you to validate cookies that were set by the server.
+
+```flow
+# Assert that a session cookie was set
+> assert cookies.sessionId != null
+> assert cookies.sessionId == "abc123"
+
+# Assert that a JWT token cookie exists
+> assert cookies.token contains "eyJ"
+
+# Assert that preferences cookie was set
+> assert cookies.preferences == "theme%3Ddark"
+```
+
 ### Regular Expression Assertions
 
 The `matches` operator allows you to use regular expressions for more complex string validations.
