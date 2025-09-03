@@ -1,0 +1,10 @@
+{
+  "title": "Core Concepts",
+  "pages": [
+    "flows-and-steps",
+    "dsl-basics",
+    "variables-overview",
+    "assertions-basics",
+    "environment-management"
+  ]
+}

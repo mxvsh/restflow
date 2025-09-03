@@ -1,0 +1,48 @@
+---
+title: Environment Management
+description: Managing environments and configurations
+---
+
+Real-world API testing requires running the same tests against different environments, such as development, staging, and production. Restflow makes this easy with its support for `.env` files.
+
+### What is an `.env` file?
+
+An `.env` file is a simple text file that contains key-value pairs for your environment-specific variables.
+
+Here is an example `.env` file:
+
+```env
+# .env.staging
+BASE_URL=https://staging.api.example.com
+API_KEY=staging-secret-key
+TEST_USER=staging_user
+```
+
+### Using Environment Variables
+
+You can use the variables from your `.env` file in your flows using the `{{variable_name}}` syntax.
+
+```flow
+### Get data from a protected endpoint
+GET {{BASE_URL}}/data
+Api-Key: {{API_KEY}}
+
+> assert status == 200
+```
+
+### Running with an Environment
+
+To run your flows with a specific environment file, use the `--env` flag on the command line:
+
+```bash
+restflow run my-flow.flow --env .env.staging
+```
+
+When you run this command, Restflow will load the variables from `.env.staging` and make them available in your flow.
+
+This allows you to keep your `.flow` files clean and free of environment-specific details. You can have multiple `.env` files for your different environments:
+- `.env.dev`
+- `.env.staging`
+- `.env.prod`
+
+And switch between them easily using the `--env` flag. This is a powerful feature for creating portable and maintainable API tests.

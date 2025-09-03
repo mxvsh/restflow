@@ -1,0 +1,48 @@
+---
+title: Command Overview
+description: An overview of all available CLI commands
+---
+
+The Restflow CLI is the primary way to execute your API tests. The base command is `restflow`.
+
+You can get help at any time by running:
+```bash
+restflow --help
+```
+
+### Main Commands
+
+Restflow has a few main commands for different tasks.
+
+#### `restflow run`
+
+This is the most important command. It is used to execute one or more `.flow` files.
+
+```bash
+# Run a single flow
+restflow run path/to/your.flow
+
+# Run all flows in a directory
+restflow run path/to/your/flows/
+```
+
+This command has many options for controlling the execution, which are detailed on the `run` command page.
+
+#### `restflow init`
+
+The `init` command helps you set up a new Restflow project or add Restflow to an existing one. It can create a sample project structure with example flows and an environment file.
+
+```bash
+# Initialize a new Restflow project in the current directory
+restflow init
+```
+
+This is a great way to get started quickly.
+
+### Global Options
+
+These options can be used with any command.
+
+- `--help`: Show help information.
+- `--version`: Show the installed version of Restflow.
+- `--verbose`: Enable detailed logging, which can be useful for debugging.

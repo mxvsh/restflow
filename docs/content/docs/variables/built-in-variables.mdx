@@ -1,0 +1,82 @@
+---
+title: Built-in Variables
+description: Using Restflow's built-in dynamic variables
+---
+
+Restflow includes a set of built-in variables that you can use to generate dynamic data for your tests. This is incredibly useful for creating unique resources or for testing with random values.
+
+**Important Note**: A new, unique value is generated every time a built-in variable is referenced. If you need to use the same generated value in multiple places, you should capture it first.
+
+### `{{uuid}}`
+
+Generates a standard Version 4 UUID (Universally Unique Identifier).
+
+**Use case**: Creating resources that require a unique identifier, or for `X-Request-ID` headers.
+
+```flow
+### Create a new user with a unique email
+POST /users
+Content-Type: application/json
+
+{
+  "email": "user-{{uuid}}@example.com",
+  "password": "password123"
+}
+```
+
+### `{{timestamp}}`
+
+Generates the current Unix timestamp (the number of seconds since the Unix epoch).
+
+**Use case**: Timestamps for created resources, or for testing time-based functionality.
+
+```flow
+### Create a post with a dynamic title
+POST /posts
+Content-Type: application/json
+
+{
+  "title": "Post created at {{timestamp}}",
+  "body": "This is the content."
+}
+```
+
+### `{{randomString}}`
+
+Generates a random alphanumeric string of a variable length.
+
+**Use case**: Creating unique usernames, names, or other text fields.
+
+```flow
+### Register a user with a random username
+POST /register
+Content-Type: application/json
+
+{
+  "username": "user_{{randomString}}",
+  "email": "email_{{randomString}}@example.com"
+}
+```
+
+### `{{randomNumber}}`
+
+Generates a random integer between 0 and 999999.
+
+**Use case**: Testing with random numerical data, such as quantities or ratings.
+
+```flow
+### Add an item to a cart with a random quantity
+POST /cart/items
+Content-Type: application/json
+
+{
+  "item_id": 123,
+  "quantity": {{randomNumber}}
+}
+```
+
+### Ensuring Consistency
+
+If you need to use the same random value in multiple places, capture it from a header or body. A common pattern is to send it in a request header and capture it from the response if the API echoes it back.
+
+A simpler way is to use it in an environment variable, but that is a more advanced topic.

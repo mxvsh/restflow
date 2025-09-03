@@ -1,0 +1,85 @@
+---
+title: Syntax Overview
+description: A complete reference for the Restflow DSL syntax
+---
+
+The Restflow DSL is designed to be as readable and intuitive as possible. This page provides a comprehensive reference for all the components of the `.flow` file syntax.
+
+### File Structure
+
+A `.flow` file is a plain text file that consists of one or more steps. Comments can be added on any line by starting the line with a `#`.
+
+### Step Declaration
+
+Every step must begin with a level-3 markdown header (`###`).
+
+```flow
+### This is a valid step name
+```
+
+### HTTP Request
+
+The line immediately following the step name defines the HTTP request.
+
+```flow
+METHOD /path/to/resource
+```
+
+- **Supported Methods**: `GET`, `POST`, `PUT`, `DELETE`, `PATCH`, `HEAD`, `OPTIONS`.
+- **URL**: Can be a relative path (e.g., `/users/1`) or a full URL (e.g., `https://api.example.com/users/1`). Relative paths are automatically prefixed with the `BASE_URL` from your environment file.
+
+### Headers
+
+HTTP headers are specified as key-value pairs, one per line, after the request line.
+
+```flow
+Content-Type: application/json
+Authorization: Bearer {{token}}
+```
+
+### Request Body
+
+The request body is placed after the headers, separated by a single blank line.
+
+```flow
+{
+  "name": "John Doe",
+  "email": "john@example.com"
+}
+```
+
+### Directives
+
+Directives are special commands that are executed after the HTTP request is complete. They always start with a `>` character.
+
+The two main directives are `assert` and `capture`.
+
+```flow
+> assert status == 200
+> capture userId = body.id
+```
+
+### A Complete Example
+
+Putting it all together, here is a complete, valid step:
+
+```flow
+# This flow registers a new user and captures their ID.
+### Register New User
+POST /users
+Content-Type: application/json
+
+{
+  "name": "Jane Doe",
+  "email": "jane.doe@example.com",
+  "password": "a-secure-password"
+}
+
+# Verify that the user was created successfully
+> assert status == 201
+> assert body.id != null
+> assert body.email == "jane.doe@example.com"
+
+# Capture the new user's ID for use in subsequent steps
+> capture userId = body.id
+```

@@ -11,8 +11,7 @@ Create a new file called `api-test.flow`:
 
 ```flow
 ### Test User API
-GET /users/1
-Host: jsonplaceholder.typicode.com
+GET https://jsonplaceholder.typicode.com/users/1
 
 > assert status == 200
 > assert body.id == 1
@@ -44,9 +43,8 @@ Tests: 1 passed, 0 failed
 Make your tests dynamic with variables:
 
 ```flow
-### Create and Get User
-POST /users
-Host: jsonplaceholder.typicode.com
+### Create a User
+POST https://jsonplaceholder.typicode.com/users
 Content-Type: application/json
 
 {
@@ -54,11 +52,10 @@ Content-Type: application/json
   "email": "test-{{uuid}}@example.com"
 }
 
-> capture body.id as userId
+> capture userId = body.id
 
 ### Get Created User
-GET /users/{{userId}}
-Host: jsonplaceholder.typicode.com
+GET https://jsonplaceholder.typicode.com/users/{{userId}}
 
 > assert status == 200
 > assert body.id == {{userId}}
@@ -66,25 +63,25 @@ Host: jsonplaceholder.typicode.com
 
 ## 4. Environment Configuration
 
-Create `.env` file for environment-specific settings:
+Create a `.env` file for environment-specific settings:
 
-```bash
+```env
 # .env
 BASE_URL=https://jsonplaceholder.typicode.com
 API_KEY=your-api-key
 ```
 
-Update your flow:
+Update your flow to use the `BASE_URL`:
 
 ```flow
 ### Get User with Environment
-GET /users/1
+GET {{BASE_URL}}/users/1
 Authorization: Bearer {{API_KEY}}
 
 > assert status == 200
 ```
 
-Run with environment:
+Run with the environment:
 
 ```bash
 restflow run api-test.flow --env .env
@@ -94,44 +91,16 @@ restflow run api-test.flow --env .env
 
 **JSON Output:**
 ```bash
-restflow run api-test.flow --output json
+restflow run api-test.flow --format json
 ```
 
 **Summary View:**
 ```bash
-restflow run api-test.flow --output summary
-```
-
-## Common Patterns
-
-**Testing API Endpoints:**
-```flow
-### Test Multiple Endpoints
-GET /users
-> assert status == 200
-> assert body.length > 0
-
-### Check Individual User
-GET /users/1
-> assert body.name == "Leanne Graham"
-```
-
-**Using Built-in Variables:**
-```flow
-### Dynamic Test Data
-POST /posts
-Content-Type: application/json
-
-{
-  "title": "Test Post {{timestamp}}",
-  "userId": {{randomNumber}}
-}
-
-> assert status == 201
+restflow run api-test.flow --format summary
 ```
 
 ## Next Steps
 
 - [Set up a complete project](/docs/getting-started/project-setup)
-- [Learn the Flow syntax](/docs/writing-flows/basics)
-- [Explore variables and environments](/docs/writing-flows/variables)
+- [Learn the DSL syntax](/docs/dsl-reference/syntax-overview)
+- [Explore variables and environments](/docs/variables/variable-types)

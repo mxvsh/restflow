@@ -1,0 +1,59 @@
+---
+title: Variable Types
+description: Understanding the different types of variables in Restflow
+---
+
+Restflow has a powerful variable system with several types of variables. Understanding each type will help you write more dynamic and maintainable tests.
+
+### Variable Resolution Priority
+
+When a variable is used, Restflow searches for its value in the following order of priority (from highest to lowest):
+
+1.  **CLI Variables**: Passed via the command line.
+2.  **Captured Variables**: Extracted from a previous step's response.
+3.  **Environment Variables**: Loaded from `.env` files.
+4.  **Built-in Variables**: Provided by Restflow for dynamic data generation.
+
+This means that a CLI variable will override an environment variable with the same name.
+
+### 1. CLI Variables
+
+You can pass variables directly from the command line when you run a flow. This is useful for overriding default values or for use in CI/CD pipelines.
+
+*(Note: The exact syntax for passing CLI variables will be covered in the CLI Reference section.)*
+
+### 2. Captured Variables
+
+These variables are created using the `capture` directive. They allow you to extract a value from an HTTP response and use it in subsequent requests. This is the primary way to chain requests together.
+
+```flow
+### Login and capture token
+POST /login
+...
+> capture auth_token = body.token
+
+### Use the captured token
+GET /profile
+Authorization: Bearer {{auth_token}}
+```
+
+### 3. Environment Variables
+
+Environment variables are loaded from `.env` files and are typically used for environment-specific configuration like API keys, base URLs, or test user credentials.
+
+```env
+# .env.staging
+BASE_URL=https://staging.api.example.com
+API_KEY=my-secret-key
+```
+
+### 4. Built-in Variables
+
+Restflow provides a set of built-in variables for generating common types of dynamic data.
+
+- `{{uuid}}`: A version 4 UUID.
+- `{{timestamp}}`: A Unix timestamp.
+- `{{randomString}}`: A random alphanumeric string.
+- `{{randomNumber}}`: A random number.
+
+Each time a built-in variable is used, it generates a new, unique value.

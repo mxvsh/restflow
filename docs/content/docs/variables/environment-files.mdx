@@ -1,0 +1,51 @@
+---
+title: Environment Files
+description: .env file structure and best practices
+---
+
+Environment files (or `.env` files) are the standard way to manage environment-specific configuration in Restflow. They allow you to keep your `.flow` files clean and portable across different environments like development, staging, and production.
+
+### File Format
+
+An `.env` file is a simple text file with `KEY=VALUE` pairs.
+
+```env
+# This is a comment
+BASE_URL=https://api.example.com
+API_KEY=your-secret-api-key
+TEST_USER_EMAIL=test@example.com
+```
+
+- Comments start with `#`.
+- Keys are typically uppercase, but this is not required.
+- Values are everything after the `=`. Do not use quotes unless they are part of the value.
+
+### Naming Conventions
+
+While you can name your environment files anything, a common convention is to use `.env.<environment_name>`.
+
+- `.env.development`
+- `.env.staging`
+- `.env.production`
+- `.env.local` (for local overrides)
+
+### Loading an Environment File
+
+Use the `--env` or `-e` flag when running Restflow to specify which environment file to load.
+
+```bash
+# Run tests against the staging environment
+restflow run tests/ --env .env.staging
+
+# Run tests against the production environment
+restflow run tests/ --env .env.production
+```
+
+If you don't specify an `--env` flag, Restflow will automatically look for a file named `.env` in the current directory.
+
+### Best Practices
+
+1.  **Never commit secrets**: Add your `.env` files with sensitive information (like API keys and passwords) to your `.gitignore` file.
+2.  **Create a template file**: Create an example file like `.env.example` with all the required keys but with placeholder values. Commit this file to your repository so other developers know what variables are needed.
+3.  **Use `BASE_URL`**: Define a `BASE_URL` in your environment files and use relative paths in your flows. This makes your tests highly portable.
+4.  **Keep it flat for now**: While Restflow supports advanced features like variable chaining in `.env` files, it's best to start with a simple, flat list of key-value pairs.

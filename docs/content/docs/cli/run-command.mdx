@@ -1,0 +1,72 @@
+---
+title: The 'run' Command
+description: Running flows with various options
+---
+
+The `restflow run` command is used to execute your `.flow` files. You can specify one or more files or directories as arguments.
+
+### Basic Usage
+
+```bash
+# Run a single flow file
+restflow run my-test.flow
+
+# Run multiple specific flow files
+restflow run test1.flow test2.flow
+
+# Run all flow files in a directory (and its subdirectories)
+restflow run ./tests/
+```
+
+### Command Options
+
+The `run` command has several options to customize its behavior.
+
+#### `--env <path>` or `-e <path>`
+
+Load environment variables from a specific file.
+
+```bash
+restflow run tests/ --env .env.staging
+```
+
+#### `--format <format>` or `-f <format>`
+
+Specify the output format.
+- `console` (default): Human-readable, colored output.
+- `json`: Machine-readable JSON output.
+- `summary`: A concise table of results.
+
+```bash
+restflow run tests/ --format json > results.json
+```
+
+#### `--timeout <ms>`
+
+Set a timeout in milliseconds for each HTTP request. The default is typically 30 seconds (30000 ms).
+
+```bash
+# Set a 10-second timeout
+restflow run tests/ --timeout 10000
+```
+
+#### `--show-body`
+
+Include the request and response bodies in the output. This is very useful for debugging.
+
+#### `--show-headers`
+
+Include the request and response headers in the output.
+
+#### `--verbose`
+
+Enable verbose logging for more detailed output about the execution process.
+
+### Combining Options
+
+You can combine these options to suit your needs.
+
+```bash
+# Run tests against staging, with a 5s timeout, and show bodies and headers
+restflow run tests/ --env .env.staging --timeout 5000 --show-body --show-headers
+```

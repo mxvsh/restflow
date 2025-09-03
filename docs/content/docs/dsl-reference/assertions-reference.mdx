@@ -1,0 +1,92 @@
+---
+title: Assertions Reference
+description: A complete guide to assertions in Restflow
+---
+
+Assertions are the core of API testing in Restflow. They allow you to validate the responses from your API. This page covers all the types of assertions available.
+
+### Assertion Syntax
+
+All assertions use the `assert` directive:
+
+`> assert <source> <operator> <value>`
+
+### Status Code Assertions
+
+You can use standard comparison operators to check the HTTP status code.
+
+```flow
+> assert status == 200
+> assert status != 404
+> assert status >= 200
+> assert status < 500
+```
+
+### Response Body Assertions
+
+For JSON responses, you can use JSONPath to access nested values in the response body. The `body` keyword represents the root of the JSON response.
+
+```flow
+# For a response like: { "user": { "id": 123, "name": "John" }, "posts": [...] }
+> assert body.user.id == 123
+> assert body.user.name == "John"
+> assert body.posts.length > 0
+```
+
+### Response Header Assertions
+
+You can access response headers using the `headers` keyword. Header names are case-insensitive.
+
+```flow
+> assert headers["content-type"] contains "application/json"
+> assert headers["x-request-id"] != null
+```
+
+### Regular Expression Assertions
+
+The `matches` operator allows you to use regular expressions for more complex string validations.
+
+```flow
+# Check that a message starts with "Success"
+> assert body.message matches "^Success"
+
+# Check that an ID is a number
+> assert body.id matches "\\d+"
+```
+
+### Existence and Type Assertions
+
+You can check for the existence or non-existence of a field, or check its type.
+
+```flow
+# Check that a token field exists
+> assert body.token != null
+
+# Check that an error field does not exist
+> assert body.error == null
+
+# Check the type of a value
+> assert body.user.id is number
+> assert body.user.name is string
+> assert body.user.isActive is boolean
+> assert body.posts is array
+```
+
+### Comparison Operators
+
+Restflow supports a rich set of comparison operators:
+
+| Operator | Description |
+|---|---|
+| `==` | Equal |
+| `!=` | Not equal |
+| `>` | Greater than |
+| `>=` | Greater than or equal to |
+| `<` | Less than |
+| `<=` | Less than or equal to |
+| `contains` | String or array contains a value |
+| `not contains` | String or array does not contain a value |
+| `matches` | Regular expression match |
+| `not matches` | Regular expression non-match |
+| `is` | Type check (e.g., `is number`, `is string`) |
+| `is not`| Negated type check |
