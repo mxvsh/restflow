@@ -29,6 +29,7 @@
 - Use ES modules (`import`/`export`)
 - Follow existing naming conventions
 - Add JSDoc for public APIs
+- Use pnpm for package management
 
 ### Testing
 - Write tests for new features
