@@ -16,6 +16,7 @@ export default defineConfig({
 				"javascript",
 				"typescript",
 				"json",
+				"dotenv",
 				{
 					name: "flow",
 					scopeName: "source.flow",

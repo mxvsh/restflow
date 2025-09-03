@@ -1,10 +1,23 @@
 {
-  "title": "Documentation",
-  "pages": [
-    "getting-started",
-    "core-concepts",
-    "dsl-reference",
-    "variables",
-    "cli"
-  ]
+	"pages": [
+		"getting-started/introduction",
+		"getting-started/installation", 
+		"getting-started/quick-start",
+		"getting-started/project-setup",
+		"---Core Concepts---",
+		"core-concepts/flows-and-steps",
+		"core-concepts/dsl-basics",
+		"core-concepts/variables-overview",
+		"core-concepts/assertions-basics",
+		"core-concepts/environment-management",
+		"---DSL Reference---",
+		"dsl-reference",
+		"---Variables & Environment---",
+		"variables/variable-types",
+		"variables/built-in-variables",
+		"variables/environment-files",
+		"---CLI---",
+		"cli"
+	],
+	"defaultOpen": true
 }
