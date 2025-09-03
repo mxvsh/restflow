@@ -1,0 +1,68 @@
+---
+title: Assertions Basics
+description: Writing basic assertions and validations
+---
+
+Assertions are used to verify that your API is behaving as expected. In Restflow, you use the `assert` directive to check the status code, headers, and body of a response.
+
+### The `assert` Directive
+
+The `assert` directive has the following structure:
+
+`> assert <source> <operator> <value>`
+
+- **source**: The part of the response to check (e.g., `status`, `body.id`, `headers["content-type"]`).
+- **operator**: The comparison to perform (e.g., `==`, `!=`, `>`, `contains`).
+- **value**: The expected value.
+
+If an assertion fails, the step is marked as failed, and the execution of the flow may stop depending on your configuration.
+
+### Common Assertions
+
+Here are some of the most common assertions you'll use:
+
+#### Checking the Status Code
+
+This is the most fundamental assertion. You should almost always check the status code.
+
+```flow
+### Get a resource
+GET https://api.example.com/items/1
+
+> assert status == 200
+```
+
+#### Checking the Response Body
+
+You can use JSONPath to access values in a JSON response body.
+
+```flow
+### Get a user
+GET https://api.example.com/users/123
+
+> assert body.id == 123
+> assert body.name == "John Doe"
+> assert body.address.city == "New York"
+```
+
+#### Checking for Existence
+
+You can check if a field exists in the response.
+
+```flow
+> assert body.id != null
+```
+
+#### Checking Array Length
+
+```flow
+> assert body.items.length > 0
+```
+
+#### Checking Headers
+
+```flow
+> assert headers["content-type"] contains "application/json"
+```
+
+These are just the basics. The "DSL Reference" section has a complete guide to all the available assertion operators and advanced techniques.

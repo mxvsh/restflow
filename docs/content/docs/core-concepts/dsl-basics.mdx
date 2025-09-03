@@ -1,0 +1,48 @@
+---
+title: DSL Basics
+description: Introduction to the .flow file syntax
+---
+
+The Restflow DSL (Domain-Specific Language) is designed to be simple, readable, and easy to write. All tests are written in `.flow` files using a plain text format.
+
+### Basic Structure
+
+A `.flow` file is composed of one or more steps. Each step has the following structure:
+
+```
+### Step Name
+HTTP_METHOD URL
+Header-Name: Header-Value
+
+Request Body
+
+> directive
+```
+
+- **Step Name**: A descriptive name for your step, starting with `###`.
+- **HTTP Method and URL**: The HTTP method (e.g., `GET`, `POST`) and the endpoint URL.
+- **Headers**: Optional HTTP headers, one per line.
+- **Request Body**: The body of the request, separated from the headers by a blank line.
+- **Directives**: Actions to perform after the request, such as assertions or capturing variables. Each directive starts with `>`.
+
+### Example
+
+Here's a complete example of a `.flow` file with a single step:
+
+```flow
+### Create a new user
+POST https://api.example.com/users
+Content-Type: application/json
+Authorization: Bearer {{api_key}}
+
+{
+  "name": "John Doe",
+  "email": "john.doe@example.com"
+}
+
+> assert status == 201
+> assert body.id != null
+> capture userId = body.id
+```
+
+This example demonstrates all the basic components of the DSL in action. As you can see, it's designed to be self-documenting and easy to understand at a glance.

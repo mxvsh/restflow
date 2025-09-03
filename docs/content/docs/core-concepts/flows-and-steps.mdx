@@ -1,0 +1,45 @@
+---
+title: Flows and Steps
+description: Understanding the basic structure of Restflow tests
+---
+
+In Restflow, your API tests are organized into **flows** and **steps**. This structure helps you create readable, maintainable, and powerful tests.
+
+### Flows
+
+A **flow** is a single `.flow` file that contains a sequence of steps. It represents a complete user journey or a set of related API tests. For example, a `login.flow` file could contain all the steps required to authenticate a user.
+
+Flows are executed from top to bottom. You can run a single flow or multiple flows at once.
+
+### Steps
+
+A **step** is a single API request within a flow. Each step has a name, an HTTP request, and optional directives for assertions and variable capturing.
+
+A step is defined using `###` followed by the step name.
+
+Here is an example of a flow with two steps:
+
+```flow
+### Step 1: Get a post
+GET https://jsonplaceholder.typicode.com/posts/1
+
+> assert status == 200
+
+### Step 2: Create a new post
+POST https://jsonplaceholder.typicode.com/posts
+Content-Type: application/json
+
+{
+  "title": "My new post",
+  "body": "A great post"
+}
+
+> assert status == 201
+```
+
+In this example:
+- The file itself represents the flow.
+- "Get a post" is the first step.
+- "Create a new post" is the second step.
+
+Each step is independent by default, but you can use variables to pass data between steps, creating powerful testing workflows.

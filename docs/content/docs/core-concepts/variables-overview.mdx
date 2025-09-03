@@ -1,0 +1,55 @@
+---
+title: Variables Overview
+description: A brief introduction to variables in Restflow
+---
+
+Variables are a key feature of Restflow, allowing you to create dynamic and flexible API tests. You can use variables to pass data between steps, use environment-specific values, and generate random data.
+
+### Variable Syntax
+
+Variables in Restflow use the `{{variable_name}}` syntax. When a flow is executed, Restflow replaces these placeholders with their corresponding values.
+
+```flow
+### Get user profile
+GET https://api.example.com/users/{{userId}}
+Authorization: Bearer {{auth_token}}
+```
+
+### Types of Variables
+
+Restflow supports several types of variables:
+
+- **Environment Variables**: Loaded from `.env` files. Useful for storing environment-specific data like API keys and base URLs.
+- **Captured Variables**: Extracted from the response of a previous step using the `capture` directive. This is how you chain requests together.
+- **Built-in Variables**: Provided by Restflow for generating dynamic data like `{{uuid}}`, `{{timestamp}}`, and `{{randomString}}`.
+- **CLI Variables**: Passed from the command line when running a flow.
+
+### A Simple Workflow
+
+Here's an example of how variables connect steps in a workflow:
+
+```flow
+### 1. Login and get a token
+POST https://api.example.com/login
+Content-Type: application/json
+
+{
+  "username": "{{test_user}}",
+  "password": "{{test_password}}"
+}
+
+> capture auth_token = body.token
+
+### 2. Use the token to access a protected resource
+GET https://api.example.com/profile
+Authorization: Bearer {{auth_token}}
+
+> assert status == 200
+```
+
+In this example:
+1. `{{test_user}}` and `{{test_password}}` are likely defined in an environment file.
+2. The `capture` directive saves the `token` from the login response into the `auth_token` variable.
+3. The `auth_token` variable is then used in the `Authorization` header of the next request.
+
+This is just a brief overview. The "Variables & Environment" section provides more in-depth information on each variable type.
