@@ -11,7 +11,7 @@
 A powerful CLI tool for API testing and workflow automation using a simple, human-readable DSL.
 </p>
 <p align="center">
-  <a href="https://restflow-docs.vercel.app/">📖 Documentation</a>
+  <a href="https://restflow.vercel.app/docs">📖 Documentation</a>
 </p>
 
 ## 📦 Installation
