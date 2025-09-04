@@ -1,7 +1,7 @@
 {
 	"pages": [
 		"getting-started/introduction",
-		"getting-started/installation", 
+		"getting-started/installation",
 		"getting-started/quick-start",
 		"getting-started/project-setup",
 		"---Core Concepts---",
@@ -11,13 +11,15 @@
 		"core-concepts/assertions-basics",
 		"core-concepts/environment-management",
 		"---DSL Reference---",
-		"dsl-reference",
+		"dsl-reference/syntax-overview",
+		"dsl-reference/assertions-reference",
 		"---Variables & Environment---",
 		"variables/variable-types",
 		"variables/built-in-variables",
 		"variables/environment-files",
 		"---CLI---",
-		"cli"
+		"cli/command-overview",
+		"cli/run-command"
 	],
 	"defaultOpen": true
 }
