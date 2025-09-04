@@ -1,6 +1,7 @@
 import type {
 	AssertDirective,
 	CaptureDirective,
+	ConsoleDirective,
 	Directive,
 	Flow,
 	FlowStep,
@@ -160,6 +161,12 @@ function parseDirectives(lines: string[]): Directive[] {
 				type: "assert",
 				expression,
 			} as AssertDirective);
+		} else if (directiveContent.startsWith("console ")) {
+			const expression = directiveContent.substring("console ".length);
+			directives.push({
+				type: "console",
+				expression,
+			} as ConsoleDirective);
 		}
 	}
 

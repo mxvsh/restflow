@@ -26,6 +26,7 @@
     "@restflow/http": "workspace:*",
     "@restflow/assertions": "workspace:*",
     "@restflow/reporter": "workspace:*",
+    "picocolors": "^1.1.1",
     "tslib": "^2.3.0"
   }
 }

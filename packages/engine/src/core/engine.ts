@@ -5,9 +5,11 @@ import {
 import { EnvironmentManager } from "@restflow/environment";
 import { HttpClient } from "@restflow/http";
 import { parseFlow } from "@restflow/parser";
+import pc from "picocolors";
 import type {
 	AssertDirective,
 	CaptureDirective,
+	ConsoleDirective,
 	DirectiveResult,
 	ExecutionContext,
 	Flow,
@@ -239,7 +241,7 @@ export class FlowExecutor {
 	 * Evaluate all directives for a response
 	 */
 	private evaluateDirectives(
-		directives: Array<CaptureDirective | AssertDirective>,
+		directives: Array<CaptureDirective | AssertDirective | ConsoleDirective>,
 		response: HttpResponse,
 		context: ExecutionContext,
 	): DirectiveResult[] {
@@ -249,6 +251,8 @@ export class FlowExecutor {
 					return this.evaluateCaptureDirective(directive, response);
 				} else if (directive.type === "assert") {
 					return this.evaluateAssertDirective(directive, response, context);
+				} else if (directive.type === "console") {
+					return this.evaluateConsoleDirective(directive, response, context);
 				} else {
 					return {
 						directive,
@@ -325,6 +329,75 @@ export class FlowExecutor {
 				error: `Failed to evaluate assertion: ${error instanceof Error ? error.message : String(error)}`,
 			};
 		}
+	}
+
+	/**
+	 * Evaluate a console directive
+	 */
+	private evaluateConsoleDirective(
+		directive: ConsoleDirective,
+		response: HttpResponse,
+		context: ExecutionContext,
+	): DirectiveResult {
+		try {
+			const value = this.valueExtractor.extract(
+				directive.expression,
+				response,
+			);
+
+			// Generate formatted console output without printing
+			const consoleOutput = this.formatConsoleValue(directive.expression, value);
+
+			return {
+				directive,
+				success: true,
+				consoleOutput,
+			};
+		} catch (error) {
+			return {
+				directive,
+				success: false,
+				error: `Failed to console log value: ${error instanceof Error ? error.message : String(error)}`,
+			};
+		}
+	}
+
+	/**
+	 * Format a value for console output with colors and formatting
+	 */
+	private formatConsoleValue(expression: string, value: unknown): string {
+		const lines: string[] = [];
+		
+		if (value === null) {
+			lines.push(pc.gray('null'));
+		} else if (value === undefined) {
+			lines.push(pc.gray('undefined'));
+		} else if (typeof value === 'string') {
+			lines.push(pc.green(`"${value}"`));
+		} else if (typeof value === 'number') {
+			lines.push(pc.yellow(String(value)));
+		} else if (typeof value === 'boolean') {
+			lines.push(pc.magenta(String(value)));
+		} else if (typeof value === 'object') {
+			try {
+				const formatted = JSON.stringify(value, null, 2);
+				// Basic JSON syntax highlighting
+				const highlighted = formatted
+					.replace(/"([^"]+)":/g, `${pc.cyan('"$1"')}:`) // Keys
+					.replace(/: "([^"]+)"/g, `: ${pc.green('"$1"')}`) // String values
+					.replace(/: (\d+)/g, `: ${pc.yellow('$1')}`) // Numbers
+					.replace(/: (true|false)/g, `: ${pc.magenta('$1')}`) // Booleans
+					.replace(/: null/g, `: ${pc.gray('null')}`); // Null
+
+				lines.push(...highlighted.split('\n'));
+			} catch {
+				lines.push(pc.white(String(value)));
+			}
+		} else {
+			lines.push(pc.white(String(value)));
+		}
+
+		return lines.join('\n');
 	}
 
 	/**

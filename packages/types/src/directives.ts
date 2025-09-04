@@ -24,4 +24,5 @@ export interface DirectiveResult {
 	success: boolean;
 	error?: string;
 	capturedValue?: unknown;
+	consoleOutput?: string;
 }

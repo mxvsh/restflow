@@ -92,6 +92,14 @@ export class ConsoleReporter implements Reporter {
 				const description = this.getDirectiveDescription(directive.directive);
 
 				console.log(`      ${statusColored} ${type}: ${description}`);
+
+				// Show console output if it's a console directive
+				if (directive.directive.type === "console" && directive.consoleOutput) {
+					const consoleLines = directive.consoleOutput.split('\n');
+					consoleLines.forEach(line => {
+						console.log(`        ${line}`);
+					});
+				}
 			});
 
 			// Show headers if requested
@@ -282,6 +290,11 @@ export class ConsoleReporter implements Reporter {
 				? pc.dim(directive.expression)
 				: directive.expression;
 			return `${variable} ← ${expression}`;
+		} else if (directive.type === "console") {
+			const expression = this.options.colors
+				? pc.dim(directive.expression)
+				: directive.expression;
+			return `${expression}`;
 		}
 		return "unknown";
 	}
