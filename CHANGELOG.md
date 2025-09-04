@@ -1,3 +1,19 @@
+## 1.3.0 (2025-09-04)
+
+### 🚀 Features
+
+- enhance docs ([7fa66e9](https://github.com/mxvsh/restflow/commit/7fa66e9))
+- add cookie support for capture and assertions ([10cbbeb](https://github.com/mxvsh/restflow/commit/10cbbeb))
+- display console output inline with directive status ([680c38f](https://github.com/mxvsh/restflow/commit/680c38f))
+
+### 🩹 Fixes
+
+- **docs:** home route ([7a1527c](https://github.com/mxvsh/restflow/commit/7a1527c))
+
+### ❤️ Thank You
+
+- mxvsh @mxvsh
+
 ## 1.2.0 (2025-09-02)
 
 ### 🚀 Features
