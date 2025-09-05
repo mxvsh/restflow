@@ -245,16 +245,24 @@ export class FlowExecutor {
 		response: HttpResponse,
 		context: ExecutionContext,
 	): DirectiveResult[] {
-		return directives.map((directive) => {
+		const results: DirectiveResult[] = [];
+		
+		for (const directive of directives) {
 			try {
+				let result: DirectiveResult;
+				
 				if (directive.type === "capture") {
-					return this.evaluateCaptureDirective(directive, response);
+					result = this.evaluateCaptureDirective(directive, response);
+					// Immediately store captured variable in context for subsequent directives
+					if (result.success && result.capturedValue !== undefined) {
+						context.variables[directive.variable] = result.capturedValue;
+					}
 				} else if (directive.type === "assert") {
-					return this.evaluateAssertDirective(directive, response, context);
+					result = this.evaluateAssertDirective(directive, response, context);
 				} else if (directive.type === "console") {
-					return this.evaluateConsoleDirective(directive, response, context);
+					result = this.evaluateConsoleDirective(directive, response, context);
 				} else {
-					return {
+					result = {
 						directive,
 						success: false,
 						error: `Unknown directive type: ${
@@ -263,14 +271,18 @@ export class FlowExecutor {
 						}`,
 					};
 				}
+				
+				results.push(result);
 			} catch (error) {
-				return {
+				results.push({
 					directive,
 					success: false,
 					error: error instanceof Error ? error.message : String(error),
-				};
+				});
 			}
-		});
+		}
+		
+		return results;
 	}
 
 	/**
@@ -340,10 +352,18 @@ export class FlowExecutor {
 		context: ExecutionContext,
 	): DirectiveResult {
 		try {
-			const value = this.valueExtractor.extract(
-				directive.expression,
-				response,
-			);
+			let value: unknown;
+
+			// Check if it's a captured variable first
+			if (directive.expression in context.variables) {
+				value = context.variables[directive.expression];
+			} else {
+				// Otherwise, extract from response
+				value = this.valueExtractor.extract(
+					directive.expression,
+					response,
+				);
+			}
 
 			// Generate formatted console output without printing
 			const consoleOutput = this.formatConsoleValue(directive.expression, value);
