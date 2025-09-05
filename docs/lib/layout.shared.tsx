@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
 
 /**
@@ -12,19 +13,19 @@ export function baseOptions(): BaseLayoutProps {
 		nav: {
 			title: (
 				<>
-					<svg
-						width="24"
-						height="24"
-						xmlns="http://www.w3.org/2000/svg"
-						aria-label="Logo"
-					>
-						<circle cx={12} cy={12} r={12} fill="currentColor" />
-					</svg>
-					Restflow
+					<Image
+						alt="logo"
+						src="/restflow.png"
+						width={100}
+						height={100}
+						className="h-8 w-8"
+					/>
+					RestFlow
 				</>
 			),
 		},
 		// see https://fumadocs.dev/docs/ui/navigation/links
 		links: [],
+		githubUrl: "https://github.com/mxvsh/restflow",
 	};
 }
