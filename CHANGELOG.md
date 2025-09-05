@@ -1,3 +1,15 @@
+## 1.3.1 (2025-09-05)
+
+### 🩹 Fixes
+
+- docs link ([6be5be4](https://github.com/mxvsh/restflow/commit/6be5be4))
+- console directive can access captured variables ([809f4ea](https://github.com/mxvsh/restflow/commit/809f4ea))
+
+### ❤️ Thank You
+
+- Monawwar Abdullah @mxvsh
+- mxvsh @mxvsh
+
 ## 1.3.0 (2025-09-04)
 
 ### 🚀 Features
