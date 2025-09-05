@@ -3,38 +3,38 @@
 	"compileOnSave": false,
 	"files": [],
 	"references": [
-    {
-      "path": "./packages/types"
-    },
-    {
-      "path": "./packages/parser"
-    },
-    {
-      "path": "./packages/http"
-    },
-    {
-      "path": "./packages/variables"
-    },
-    {
-      "path": "./packages/assertions"
-    },
-    {
-      "path": "./packages/environment"
-    },
-    {
-      "path": "./packages/reporter"
-    },
-    {
-      "path": "./packages/utils"
-    },
-    {
-      "path": "./packages/engine"
-    },
-    {
-      "path": "./packages/cli"
-    },
-    {
-      "path": "./packages/create-restflow"
-    }
-  ]
+		{
+			"path": "./packages/types"
+		},
+		{
+			"path": "./packages/parser"
+		},
+		{
+			"path": "./packages/http"
+		},
+		{
+			"path": "./packages/variables"
+		},
+		{
+			"path": "./packages/assertions"
+		},
+		{
+			"path": "./packages/environment"
+		},
+		{
+			"path": "./packages/reporter"
+		},
+		{
+			"path": "./packages/utils"
+		},
+		{
+			"path": "./packages/engine"
+		},
+		{
+			"path": "./packages/cli"
+		},
+		{
+			"path": "./packages/create-restflow"
+		}
+	]
 }

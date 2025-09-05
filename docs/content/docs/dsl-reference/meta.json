@@ -1,7 +1,4 @@
 {
-  "title": "DSL Reference",
-  "pages": [
-    "syntax-overview",
-    "assertions-reference"
-  ]
+	"title": "DSL Reference",
+	"pages": ["syntax-overview", "assertions-reference"]
 }

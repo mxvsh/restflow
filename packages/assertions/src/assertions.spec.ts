@@ -63,7 +63,7 @@ describe("DefaultValueExtractor", () => {
 			statusText: "OK",
 			headers: {
 				"content-type": "application/json",
-				"set-cookie": "sessionId=abc123; Path=/; HttpOnly"
+				"set-cookie": "sessionId=abc123; Path=/; HttpOnly",
 			},
 			body: JSON.stringify({ message: "success" }),
 			responseTime: 100,
@@ -79,7 +79,8 @@ describe("DefaultValueExtractor", () => {
 			statusText: "OK",
 			headers: {
 				"content-type": "application/json",
-				"set-cookie": "token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9; Path=/api; Secure"
+				"set-cookie":
+					"token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9; Path=/api; Secure",
 			},
 			body: JSON.stringify({ message: "success" }),
 			responseTime: 100,
@@ -95,7 +96,7 @@ describe("DefaultValueExtractor", () => {
 			statusText: "OK",
 			headers: {
 				"content-type": "application/json",
-				"set-cookie": "sessionId=abc123; Path=/"
+				"set-cookie": "sessionId=abc123; Path=/",
 			},
 			body: JSON.stringify({ message: "success" }),
 			responseTime: 100,

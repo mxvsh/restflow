@@ -1,8 +1,4 @@
 {
-  "title": "Variables & Environment",
-  "pages": [
-    "variable-types",
-    "built-in-variables",
-    "environment-files"
-  ]
+	"title": "Variables & Environment",
+	"pages": ["variable-types", "built-in-variables", "environment-files"]
 }

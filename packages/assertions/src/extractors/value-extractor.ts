@@ -130,17 +130,20 @@ export class DefaultValueExtractor implements ValueExtractor {
 		}, obj);
 	}
 
-	private extractCookie(cookieName: string, headers: Record<string, string>): string | undefined {
+	private extractCookie(
+		cookieName: string,
+		headers: Record<string, string>,
+	): string | undefined {
 		// Look for Set-Cookie header (case-insensitive)
 		const setCookieHeader = headers["set-cookie"] || headers["Set-Cookie"];
-		
+
 		if (!setCookieHeader) {
 			return undefined;
 		}
 
 		// Handle multiple Set-Cookie headers
-		const cookieHeaders = Array.isArray(setCookieHeader) 
-			? setCookieHeader 
+		const cookieHeaders = Array.isArray(setCookieHeader)
+			? setCookieHeader
 			: [setCookieHeader];
 
 		// Parse each Set-Cookie header to find the requested cookie
@@ -156,14 +159,14 @@ export class DefaultValueExtractor implements ValueExtractor {
 
 	private parseCookieHeader(cookieHeader: string): Record<string, string> {
 		const cookies: Record<string, string> = {};
-		
+
 		// Split by semicolon to get individual cookie directives
-		const parts = cookieHeader.split(';');
-		
+		const parts = cookieHeader.split(";");
+
 		// The first part contains the cookie name=value
 		const firstPart = parts[0]?.trim();
 		if (firstPart) {
-			const [name, value] = firstPart.split('=', 2);
+			const [name, value] = firstPart.split("=", 2);
 			if (name && value !== undefined) {
 				cookies[name.trim()] = value.trim();
 			}

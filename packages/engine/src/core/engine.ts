@@ -5,7 +5,6 @@ import {
 import { EnvironmentManager } from "@restflow/environment";
 import { HttpClient } from "@restflow/http";
 import { parseFlow } from "@restflow/parser";
-import pc from "picocolors";
 import type {
 	AssertDirective,
 	CaptureDirective,
@@ -23,6 +22,7 @@ import {
 	createExecutionContext,
 	DefaultVariableResolver,
 } from "@restflow/variables";
+import pc from "picocolors";
 
 export interface FlowExecutorOptions {
 	config?: RestflowConfig;
@@ -246,11 +246,11 @@ export class FlowExecutor {
 		context: ExecutionContext,
 	): DirectiveResult[] {
 		const results: DirectiveResult[] = [];
-		
+
 		for (const directive of directives) {
 			try {
 				let result: DirectiveResult;
-				
+
 				if (directive.type === "capture") {
 					result = this.evaluateCaptureDirective(directive, response);
 					// Immediately store captured variable in context for subsequent directives
@@ -271,7 +271,7 @@ export class FlowExecutor {
 						}`,
 					};
 				}
-				
+
 				results.push(result);
 			} catch (error) {
 				results.push({
@@ -281,7 +281,7 @@ export class FlowExecutor {
 				});
 			}
 		}
-		
+
 		return results;
 	}
 
@@ -359,14 +359,14 @@ export class FlowExecutor {
 				value = context.variables[directive.expression];
 			} else {
 				// Otherwise, extract from response
-				value = this.valueExtractor.extract(
-					directive.expression,
-					response,
-				);
+				value = this.valueExtractor.extract(directive.expression, response);
 			}
 
 			// Generate formatted console output without printing
-			const consoleOutput = this.formatConsoleValue(directive.expression, value);
+			const consoleOutput = this.formatConsoleValue(
+				directive.expression,
+				value,
+			);
 
 			return {
 				directive,
@@ -387,29 +387,29 @@ export class FlowExecutor {
 	 */
 	private formatConsoleValue(expression: string, value: unknown): string {
 		const lines: string[] = [];
-		
+
 		if (value === null) {
-			lines.push(pc.gray('null'));
+			lines.push(pc.gray("null"));
 		} else if (value === undefined) {
-			lines.push(pc.gray('undefined'));
-		} else if (typeof value === 'string') {
+			lines.push(pc.gray("undefined"));
+		} else if (typeof value === "string") {
 			lines.push(pc.green(`"${value}"`));
-		} else if (typeof value === 'number') {
+		} else if (typeof value === "number") {
 			lines.push(pc.yellow(String(value)));
-		} else if (typeof value === 'boolean') {
+		} else if (typeof value === "boolean") {
 			lines.push(pc.magenta(String(value)));
-		} else if (typeof value === 'object') {
+		} else if (typeof value === "object") {
 			try {
 				const formatted = JSON.stringify(value, null, 2);
 				// Basic JSON syntax highlighting
 				const highlighted = formatted
 					.replace(/"([^"]+)":/g, `${pc.cyan('"$1"')}:`) // Keys
 					.replace(/: "([^"]+)"/g, `: ${pc.green('"$1"')}`) // String values
-					.replace(/: (\d+)/g, `: ${pc.yellow('$1')}`) // Numbers
-					.replace(/: (true|false)/g, `: ${pc.magenta('$1')}`) // Booleans
-					.replace(/: null/g, `: ${pc.gray('null')}`); // Null
+					.replace(/: (\d+)/g, `: ${pc.yellow("$1")}`) // Numbers
+					.replace(/: (true|false)/g, `: ${pc.magenta("$1")}`) // Booleans
+					.replace(/: null/g, `: ${pc.gray("null")}`); // Null
 
-				lines.push(...highlighted.split('\n'));
+				lines.push(...highlighted.split("\n"));
 			} catch {
 				lines.push(pc.white(String(value)));
 			}
@@ -417,7 +417,7 @@ export class FlowExecutor {
 			lines.push(pc.white(String(value)));
 		}
 
-		return lines.join('\n');
+		return lines.join("\n");
 	}
 
 	/**

@@ -95,8 +95,8 @@ export class ConsoleReporter implements Reporter {
 
 				// Show console output if it's a console directive
 				if (directive.directive.type === "console" && directive.consoleOutput) {
-					const consoleLines = directive.consoleOutput.split('\n');
-					consoleLines.forEach(line => {
+					const consoleLines = directive.consoleOutput.split("\n");
+					consoleLines.forEach((line) => {
 						console.log(`        ${line}`);
 					});
 				}

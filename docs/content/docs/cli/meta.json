@@ -1,7 +1,4 @@
 {
-  "title": "CLI Reference",
-  "pages": [
-    "command-overview",
-    "run-command"
-  ]
+	"title": "CLI Reference",
+	"pages": ["command-overview", "run-command"]
 }
