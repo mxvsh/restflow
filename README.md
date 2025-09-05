@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/drivebase/drivebase">
-    <img src="https://github.com/user-attachments/assets/86cc00a6-c358-4ec3-991c-20c4ea61c343" width="80px" alt="Restflow Logo" />
+    <img src="https://github.com/user-attachments/assets/1a0374f9-f2a3-4476-a5cd-909fcd6418fb" width="80px" alt="Restflow Logo" />
   </a>
 </p>
 
