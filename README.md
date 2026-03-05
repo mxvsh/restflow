@@ -14,6 +14,8 @@ A powerful CLI tool for API testing and workflow automation using a simple, huma
   <a href="https://restflow.vercel.app/docs">📖 Documentation</a>
 </p>
 
+<img width="3428" height="2456" alt="jsonplaceholder flow" src="https://github.com/user-attachments/assets/80c28979-e642-421c-a1a4-7d52613cdf69" />
+
 ## 📦 Installation
 
 ### Global Install
