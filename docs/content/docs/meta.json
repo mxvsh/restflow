@@ -12,6 +12,7 @@
 		"core-concepts/environment-management",
 		"---DSL Reference---",
 		"dsl-reference/syntax-overview",
+		"dsl-reference/directives-reference",
 		"dsl-reference/assertions-reference",
 		"---Variables & Environment---",
 		"variables/variable-types",

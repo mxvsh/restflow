@@ -59,7 +59,7 @@ export default defineConfig({
 						},
 						{
 							name: "keyword.operator.flow",
-							match: "^>\\s+(assert|capture)\\b",
+							match: "^>\\s+(assert|capture|console)\\b",
 						},
 						{
 							name: "string.quoted.double.flow",

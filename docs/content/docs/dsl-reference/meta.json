@@ -1,4 +1,4 @@
 {
 	"title": "DSL Reference",
-	"pages": ["syntax-overview", "assertions-reference"]
+	"pages": ["syntax-overview", "directives-reference", "assertions-reference"]
 }

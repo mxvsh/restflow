@@ -52,11 +52,12 @@ The request body is placed after the headers, separated by a single blank line.
 
 Directives are special commands that are executed after the HTTP request is complete. They always start with a `>` character.
 
-The two main directives are `assert` and `capture`.
+Restflow currently supports three directives: `assert`, `capture`, and `console`.
 
 ```flow
 > assert status == 200
 > capture userId = body.id
+> console userId
 ```
 
 ### A Complete Example

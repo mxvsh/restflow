@@ -23,7 +23,7 @@ Request Body
 - **HTTP Method and URL**: The HTTP method (e.g., `GET`, `POST`) and the endpoint URL.
 - **Headers**: Optional HTTP headers, one per line.
 - **Request Body**: The body of the request, separated from the headers by a blank line.
-- **Directives**: Actions to perform after the request, such as assertions or capturing variables. Each directive starts with `>`.
+- **Directives**: Actions to perform after the request, such as assertions, variable capture, or debug output. Each directive starts with `>`.
 
 ### Example
 
@@ -43,6 +43,7 @@ Authorization: Bearer {{api_key}}
 > assert status == 201
 > assert body.id != null
 > capture userId = body.id
+> console userId
 ```
 
 This example demonstrates all the basic components of the DSL in action. As you can see, it's designed to be self-documenting and easy to understand at a glance.

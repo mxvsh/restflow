@@ -126,7 +126,7 @@ Content-Type: application/json
 
 > assert status == 200
 > assert body.token != null
-> capture body.token as authToken
+> capture authToken = body.token
 ```
 
 **flows/users/get-user.flow**

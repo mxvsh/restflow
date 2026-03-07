@@ -1,0 +1,66 @@
+---
+title: Directives Reference
+description: Reference for all supported Restflow directives
+---
+
+Directives are post-response actions in a `.flow` step. Restflow currently supports `assert`, `capture`, and `console`.
+
+## `assert`
+
+Use `assert` to validate the response.
+
+```flow
+> assert status == 200
+> assert body.user.id != null
+> assert headers["content-type"] contains "application/json"
+```
+
+For the full assertion syntax and operator list, see [Assertions Reference](/docs/dsl-reference/assertions-reference).
+
+## `capture`
+
+Use `capture` to save a response value into a variable for later steps.
+
+Syntax:
+
+```flow
+> capture <variable> = <expression>
+```
+
+Examples:
+
+```flow
+> capture authToken = body.token
+> capture userId = body.user.id
+> capture requestId = headers.x-request-id
+> capture sessionId = cookies.sessionId
+> capture responseStatus = status
+```
+
+Captured variables are available in later steps through `{{variableName}}`.
+
+```flow
+Authorization: Bearer {{authToken}}
+```
+
+## `console`
+
+Use `console` to print a response value or a previously captured variable during execution. This is useful for debugging flows.
+
+Syntax:
+
+```flow
+> console <expression>
+```
+
+Examples:
+
+```flow
+> console body
+> console body.user
+> console headers.x-request-id
+> console cookies.sessionId
+> console authToken
+```
+
+If the expression matches a captured variable name, Restflow prints that variable. Otherwise it evaluates the expression against the current response.
