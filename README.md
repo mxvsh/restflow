@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/mxvsh/restflow">
-    <img src="https://github.com/user-attachments/assets/7cccf35d-2c37-42e9-bb2e-27facc4abbe3" width="80px" alt="Restflow Logo" />
+    <img src="./restflow.svg" width="80px" alt="Restflow Logo" />
   </a>
 </p>
 
